@@ -23,10 +23,16 @@ public class HomeController {
        throw new Exception("ec");
     }
 
-    @RequestMapping("w")
+    @RequestMapping(value = "w",produces = "application/json")
     @ResponseBody
     public ReturnValue w() throws  Exception{
         throw new Exception("w");
+    }
+
+    @RequestMapping(value = "json",produces = "application/json")
+    @ResponseBody
+    public ReturnValue json() throws  Exception{
+        return ReturnValue.buildSuccessResult("json");
     }
 
 
