@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * Created by yinqingzhun on 2017/08/29.
@@ -26,7 +27,7 @@ public class HomeController {
     @RequestMapping(value = "w",produces = "application/json")
     @ResponseBody
     public ReturnValue w() throws  Exception{
-        throw new Exception("w");
+        throw new NotFoundException();
     }
 
     @RequestMapping(value = "json",produces = "application/json")
