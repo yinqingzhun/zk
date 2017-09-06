@@ -2,9 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"></meta>
-    <title>Title</title>
+    <title>index</title>
 </head>
 <body>
-<div>welcome,everyone!</div>
+<div th:text="${message}?:'welcome,everyone!'"></div>
 </body>
 </html>

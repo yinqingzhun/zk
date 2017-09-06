@@ -2,20 +2,13 @@ package qs.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
-import qs.Exception.*;
+import qs.exception.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.Date;
 
 /**
  * A controller whose request-handler methods deliberately throw exceptions to
@@ -28,7 +21,7 @@ import java.util.Date;
  */
 @Controller
 @RequestMapping("/local")
-public class ExceptionHandlingController {
+public class ExceptionHandlingController   {
 
 	protected Logger logger;
 

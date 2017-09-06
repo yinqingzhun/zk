@@ -1,4 +1,4 @@
-package qs.Exception;
+package qs.exception;
 
 public class SupportInfoException extends RuntimeException {
 

@@ -6,14 +6,11 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
-import qs.Exception.SupportInfoException;
-import qs.ReturnValue;
+import qs.exception.SupportInfoException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -26,7 +23,7 @@ import java.util.Date;
 public class WebControllerAdvice {
     Logger logger= LoggerFactory.getLogger(WebControllerAdvice.class);
 
-   /* @ExceptionHandler(Exception.class)
+   /* @ExceptionHandler(exception.class)
     @ResponseBody
     ResponseEntity<?> handleControllerException(HttpServletRequest request, Throwable ex) {
         HttpStatus status = getStatus(request);
@@ -62,7 +59,7 @@ public class WebControllerAdvice {
      * Convert a predefined exception to an HTTP Status code and specify the
      * name of a specific view that will be used to display the error.
      *
-     * @return Exception view.
+     * @return exception view.
      */
     @ExceptionHandler({ SQLException.class, DataAccessException.class })
     public String databaseError(Exception exception) {

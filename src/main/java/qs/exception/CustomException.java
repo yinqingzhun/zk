@@ -1,4 +1,4 @@
-package qs.Exception;
+package qs.exception;
 
 public class CustomException extends RuntimeException {
 
