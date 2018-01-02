@@ -1,0 +1,11 @@
+# JWT
+jwt:
+  header: Authorization
+  secret: kiouweflasvbguio
+  expiration: 604800
+  tokenHead: Bearer
+  route:
+    authentication:
+      path: auth
+      refresh: "auth/refresh"
+      register: "auth/register"

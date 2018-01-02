@@ -5,7 +5,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 
@@ -33,6 +35,14 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:static/img/favicon.ico");
+        registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
+        registry.addResourceHandler("/layui/**").addResourceLocations("classpath:/static/layui/");
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/logon").setViewName("login");
+        registry.addViewController("/h").setViewName("h");
     }
 
     @Bean
@@ -43,7 +53,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     }
 
 
-//    @Bean
+    //    @Bean
 //    ErrorController errorController(ErrorAttributes errorAttributes, ServerProperties serverProperties,
 //                                    ObjectProvider<List<ErrorViewResolver>> errorViewResolversProvider,
 //                                    List<ErrorViewResolver> errorViewResolvers) {

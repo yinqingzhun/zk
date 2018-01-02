@@ -3,8 +3,23 @@
 <head>
     <meta charset="UTF-8"></meta>
     <title>index</title>
+    <script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
 </head>
 <body>
-<div th:text="${message}?:'welcome,everyone!'"></div>
+<div th:unless="${#httpServletRequest.remoteUser eq null}">
+    welcome,<span th:text="${#httpServletRequest.remoteUser}"></span>
+    <form th:action="@{/logout}" method="post"
+          style="display: inline-block; padding-left: 10px;">
+        <a href="#" onclick="this.parentNode.submit()">logout</a>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+
+
+</script>
 </body>
 </html>
