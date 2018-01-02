@@ -1,10 +1,9 @@
-package qs.web;
+package qs.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import qs.exception.*;
 
@@ -19,8 +18,8 @@ import java.sql.SQLException;
  * 
  * @author Paul Chapman
  */
-@Controller
-@RequestMapping("/local")
+//@Controller
+//@RequestMapping("/local")
 public class ExceptionHandlingController   {
 
 	protected Logger logger;

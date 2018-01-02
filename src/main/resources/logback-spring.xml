@@ -35,7 +35,7 @@
     <logger name="org.springframework.jndi" level="error"></logger>
 
     <springProfile name="dev,test">
-        <root level="debug">
+        <root level="info">
             <appender-ref ref="STDOUT" />
         </root>
     </springProfile>
