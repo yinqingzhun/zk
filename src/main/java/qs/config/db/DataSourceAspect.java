@@ -1,17 +1,24 @@
-package qs.config;
+package qs.config.db;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
+
 @Component
 @Aspect
-public class ServiceAspect {
-    @Pointcut("execution(* com.daeyes.service..*(..))")
+public class DataSourceAspect {
+    Logger logger = LoggerFactory.getLogger(DataSourceAspect.class);
+
+    @Pointcut("execution(* qs.service..*(..))")
     public void pointCut() {
     }
 
@@ -33,6 +40,7 @@ public class ServiceAspect {
 
     @Before("pointCut()")
     public void setReadDataSourceType(JoinPoint point) {
+        logger.info("********** enter: " + point.getSignature().toShortString());
         DbChoosing dbChoosing = getDbChoosing(point);
         if (dbChoosing != null)
             DataSourceContextHolder.push(dbChoosing.value());
@@ -40,7 +48,9 @@ public class ServiceAspect {
 
     @After("pointCut()")
     public void unsetReadDataSourceType(JoinPoint point) {
-        DataSourceContextHolder.pop();
+        DbChoosing dbChoosing = getDbChoosing(point);
+        if (dbChoosing != null)
+            DataSourceContextHolder.pop();
     }
 
 }

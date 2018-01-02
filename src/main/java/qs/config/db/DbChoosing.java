@@ -1,4 +1,4 @@
-package qs.config;
+package qs.config.db;
 
 import java.lang.annotation.*;
 
