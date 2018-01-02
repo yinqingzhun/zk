@@ -19,8 +19,8 @@ import java.sql.SQLException;
  * 
  * @author Paul Chapman
  */
-@Controller
-@RequestMapping("/local")
+//@Controller
+//@RequestMapping("/local")
 public class ExceptionHandlingController   {
 
 	protected Logger logger;

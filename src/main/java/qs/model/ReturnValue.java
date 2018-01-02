@@ -1,4 +1,4 @@
-package qs;
+package qs.model;
 
 /**
  * Created by yinqingzhun on 2017/08/29.
