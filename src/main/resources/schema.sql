@@ -1,0 +1,2 @@
+CREATE database dma;
+CREATE TABLE USER (id int PRIMARY  KEY,name VARCHAR );
