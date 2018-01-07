@@ -5,16 +5,13 @@ import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.aspectj.AnnotationTransactionAspect;
 
-import javax.transaction.TransactionManager;
-
 @Configuration
 @EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
-public class DataSourceConfig {
+public class DataSourceConfig     {
     @Autowired
     PlatformTransactionManager dataSourceTransactionManager;
 
@@ -25,4 +22,5 @@ public class DataSourceConfig {
         annotationTransactionAspect.setTransactionManager(dataSourceTransactionManager);
         return annotationTransactionAspect;
     }
+
 }

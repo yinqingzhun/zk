@@ -4,7 +4,7 @@
     <conversionRule conversionWord="clr"
                     converterClass="org.springframework.boot.logging.logback.ColorConverter" />
     <property name="log_patteren"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger %msg%n"></property>
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight %-5level [%thread] %logger %msg%n"></property>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoder 默认配置为PatternLayoutEncoder -->

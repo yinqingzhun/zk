@@ -10,7 +10,6 @@ import qs.repository.StudentRepository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
 
 @Service
 public class StudentService {
@@ -24,7 +23,7 @@ public class StudentService {
     }
 
     @Transactional
-    public Student save(Student student) {
+    private Student save(Student student) {
         Student value = studentRepository.save(student);
         int i = 1 / 0;
         return value;
