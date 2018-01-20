@@ -20,7 +20,7 @@ public class PropertySourceExample {
     @Value("${app.name:qs}")
     String appName;
 
-    @Value("${app.version}}")
+    @Value("${app.version}")
     String appVersion;
 
     @Value("#{ systemProperties['java.version'] }")

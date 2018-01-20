@@ -1,19 +1,26 @@
 package qs.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import qs.config.db.DbChoosing;
 import qs.config.db.EnumDataSourceName;
 
+@DbChoosing(EnumDataSourceName.TICKET_BASE)
 @Service
 public class HelloServiceImpl implements HelloService {
+    //@DbChoosing(EnumDataSourceName.TICKET_USER)
     @Override
     public void hello() {
-        System.out.println(getWord());
+        String word = getWord();
+        System.out.println(word);
     }
 
-    @DbChoosing(EnumDataSourceName.TICKET_BASE)
+    //@DbChoosing(EnumDataSourceName.TICKET_ORDER)
     private String getWord() {
         return "hello,boddy!";
+    }
+
+    //@DbChoosing(EnumDataSourceName.TICKET_ORDER)
+    private void sayHi() {
+
     }
 }

@@ -6,40 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import qs.model.Student;
-import qs.repository.StudentRepository;
 
 import java.util.List;
 import java.util.UUID;
 
-@Service
-public class StudentService {
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
-    @Autowired
-    StudentRepository studentRepository;
+public interface StudentService {
 
-    public List<Student> getList() {
-        List<Student> list = studentRepository.findAll();
-        return list;
-    }
-
-    @Transactional
-    private Student save(Student student) {
-        Student value = studentRepository.save(student);
-        int i = 1 / 0;
-        return value;
-    }
+    List<Student> getList();
 
 
-    public void generate() {
-        Student student = new Student();
-        student.setClassId(1);
-        student.setName(UUID.randomUUID().toString());
-        student.setEnabled(true);
+    Student save(Student student);
 
-        try {
-            save(student);
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-        }
-    }
+
+    void generate();
 }

@@ -66,7 +66,7 @@ public class WebControllerAdvice {
         // Nothing to do. Return value 'databaseError' used as logical view name
         // of an error page, passed to view-resolver(s) in usual way.
         logger.error("Request raised " + exception.getClass().getSimpleName());
-        return "databaseError";
+        return "error";
     }
 
     /**

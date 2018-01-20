@@ -20,14 +20,16 @@
     </parent>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.projectreactor/reactor-core -->
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>-->
         <dependency>
-            <groupId>org.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
-            <version>1.1.6.RELEASE</version>
+            <groupId>de.invesdwin</groupId>
+            <artifactId>invesdwin-instrument</artifactId>
+            <version>1.0.0</version>
         </dependency>
-
-
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
@@ -54,11 +56,6 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
-            <version>3.1.1.RELEASE</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-actuator</artifactId>
         </dependency>
@@ -71,14 +68,10 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.0</version>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.18</version>
-        </dependency>-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -87,13 +80,13 @@
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.8.10</version>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.8.1</version>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.8.10</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -133,17 +126,35 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.3.9.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-instrument</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
     </dependencies>
+    <repositories>
+        <repository>
+            <id>my-repo2</id>
+            <name>your custom repo</name>
+            <url>http://invesdwin.de/artifactory/invesdwin-oss-remote</url>
+        </repository>
+    </repositories>
     <build>
         <plugins>
-           <!-- <plugin>
+            <!--<plugin>
                 <dependencies>
                     <dependency>
                         <groupId>org.aspectj</groupId>
@@ -183,6 +194,36 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <!--use loading time weaving with aspectj when tests
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.10</version>
+                <configuration>
+                    <argLine>
+                        -javaagent:"${settings.localRepository}"/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
+                        -javaagent:"${settings.localRepository}"/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
+                    </argLine>
+                    <useSystemClassLoader>true</useSystemClassLoader>
+                    <forkMode>always</forkMode>
+                </configuration>
+            </plugin>-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <mainClass>qs.Application</mainClass>
+                    <classifier>exec</classifier>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

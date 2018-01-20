@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 
-@Configuration
+//@Configuration
 public class DbConfig {
     @Value("${app.datasource.mdb.type}")
     private Class<? extends DataSource> dataSourceType;

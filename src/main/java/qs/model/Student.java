@@ -5,17 +5,15 @@ package qs.model;
 import javax.naming.Name;
 import javax.persistence.*;
 
+
 @Entity
 @Table(name="student")
-
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  int id;
     @Column
     private  String name;
-    @Column
-    private int classId;
     @Column
     private boolean enabled;
 
@@ -33,14 +31,6 @@ public class Student {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getClassId() {
-        return classId;
-    }
-
-    public void setClassId(int classId) {
-        this.classId = classId;
     }
 
     public boolean isEnabled() {

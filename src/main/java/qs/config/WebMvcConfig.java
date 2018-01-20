@@ -3,9 +3,9 @@ package qs.config;
 import org.springframework.boot.autoconfigure.web.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -17,6 +17,7 @@ import org.springframework.web.servlet.view.BeanNameViewResolver;
  */
 @Configuration
 @EnableConfigurationProperties(ResourceProperties.class)
+//@ComponentScan(value = "qs")
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 
 

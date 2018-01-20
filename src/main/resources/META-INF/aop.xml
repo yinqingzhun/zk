@@ -1,0 +1,10 @@
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+    <weaver  options="-verbose -showWeaveInfo">
+        <include within="qs.service..*"/>
+        <include within="qs.config.db.DataSourceAspect" />
+    </weaver>
+    <aspects>
+        <aspect name="qs.config.db.DataSourceAspect"/>
+    </aspects>
+</aspectj>

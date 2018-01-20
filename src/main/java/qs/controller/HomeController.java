@@ -1,25 +1,36 @@
 package qs.controller;
 
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import qs.model.ReturnValue;
-import qs.model.Student;
 import qs.service.HelloService;
 import qs.service.StudentService;
+import qs.service.WoaitingshuDownloadService;
 import qs.util.JsonHelper;
 
-import java.util.UUID;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 
 /**
  * Created by yinqingzhun on 2017/08/29.
  */
 @Controller
-public class HomeController {
-    org.slf4j.Logger logger = LoggerFactory.getLogger(HomeController.class);
+@Slf4j
+public class HomeController implements BeanNameAware, BeanFactoryAware, ApplicationContextAware, InitializingBean {
+
     @Autowired
     HelloService helloService;
     @Autowired
@@ -42,10 +53,9 @@ public class HomeController {
         //}
         studentService.generate();
 
-//        logger.info("log info - {}", serviceList.stream().map(p -> p.getClass().getSimpleName()).reduce("", (a, b) -> a + "," + b));
+//        log.info("log info - {}", serviceList.stream().map(p -> p.getClass().getSimpleName()).reduce("", (a, b) -> a + "," + b));
 
         model.addAttribute("message", JsonHelper.serialize(studentService.getList(), true));
-
 
 
         return "index";
@@ -73,5 +83,37 @@ public class HomeController {
         throw new Exception("ec");
     }
 
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        log.info("lifecycle:setBeanFactory");
+    }
 
+    @Override
+    public void setBeanName(String name) {
+        log.info("lifecycle:setBeanName," + name);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        log.info("lifecycle:setApplicationContext");
+    }
+
+    @PostConstruct
+    public void init() {
+        log.info("lifecycle:init");
+    }
+
+    @PreDestroy
+    public void destroy() {
+        log.info("lifecycle:destroy");
+    }
+
+    public void initMethod() {
+        System.out.println("lifecycle:init-method");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        log.info("lifecycle:afterPropertiesSet");
+    }
 }

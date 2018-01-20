@@ -53,6 +53,7 @@ public class WoaitingshuDownloadService {
         return null;
     }
 
+    public void xyz(){}
 
     ExecutorService executorService = Executors.newWorkStealingPool();
 
