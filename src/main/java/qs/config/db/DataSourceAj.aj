@@ -15,7 +15,7 @@ aspect DataSourceAj {
     //    return object;
     //}
 
-  public   Object around():@annotation(DbChoosing){
+ /* public   Object around():@annotation(DbChoosing){
         System.out.println("print[Annotation]JointPoint Around start: " + thisJoinPoint.getSignature());
         Object object = proceed(thisJoinPoint.getArgs());
         System.out.println("print[Annotation]JointPoint Around end: " + thisJoinPoint.getSignature());
@@ -25,16 +25,16 @@ aspect DataSourceAj {
     private pointcut executionOfAnyPublicMethodInAtTransactionalType() :
             execution(public * ((@DbChoosing *)+).*(..)) && within(@DbChoosing *);
 
-    /**
+    *//**
      * Matches the execution of any method with the Transactional annotation.
-     */
+     *//*
     private pointcut executionOfTransactionalMethod() :
             execution(@DbChoosing * *(..));
 
-    /**
+    *//**
      * Definition of pointcut from super aspect - matched join points
      * will have Spring transaction management applied.
-     */
+     *//*
     protected pointcut transactionalMethodExecution(Object txObject) :
-            (executionOfAnyPublicMethodInAtTransactionalType() || executionOfTransactionalMethod() ) && this(txObject);
+            (executionOfAnyPublicMethodInAtTransactionalType() || executionOfTransactionalMethod() ) && this(txObject);*/
 }

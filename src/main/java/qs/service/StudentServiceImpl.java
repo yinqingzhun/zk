@@ -5,12 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import qs.config.db.DbChoosing;
+import qs.config.db.EnumDataSourceName;
 import qs.model.Student;
 import qs.repository.StudentRepository;
 
 import java.util.List;
 import java.util.UUID;
-
+@DbChoosing(EnumDataSourceName.TICKET_BASE)
 @Service
 public class StudentServiceImpl implements StudentService {
     Logger logger = LoggerFactory.getLogger(StudentService.class);

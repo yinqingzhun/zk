@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>js实现元素框选</title></head>
+<style>    body {
+    padding: 100px;
+}
+
+.fileDiv {
+    float: left;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.seled {
+    border: 1px solid red;
+    background-color: #D6DFF7;
+}
+
+h3 {
+    text-align: center;
+    padding-bottom: 50px
+}</style>
+
+
+<body>
+<h3>按下鼠标左键不放，框选查看效果</h3>
+<div id="container" style="position:relative;">
+    <div class="fileDiv">file1</div>
+    <div class="fileDiv">file2</div>
+    <div class="fileDiv">file3</div>
+    <div class="fileDiv">file4</div>
+    <div class="fileDiv">file5</div>
+    <div class="fileDiv">file6</div>
+    <div class="fileDiv">file7</div>
+    <div class="fileDiv">file8</div>
+    <div class="fileDiv">file9</div>
+    <div class="fileDiv">file10</div>
+    <div class="fileDiv">file11</div>
+    <div class="fileDiv">file12</div>
+    <div class="fileDiv">file13</div>
+    <div class="fileDiv">file14</div>
+    <div class="fileDiv">file15</div>
+    <div class="fileDiv">file16</div>
+    <div class="fileDiv">file17</div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<script th:src="@{/js/drag.js}"></script>
+<script type="text/javascript">    (function () {
+
+
+    $('body').mousedown(function () {
+        var boxList = [];
+        var selectedBoxList = [];
+        var fileNodes = $('#container>*');
+        for (var i = 0; i < fileNodes.length; i++) {
+            if (fileNodes[i].className.indexOf("fileDiv") != -1) {
+                fileNodes[i].className = "fileDiv";
+                boxList.push(fileNodes[i]);
+            }
+        }
+        var isSelect = true;
+        var evt = window.event || arguments[0];
+        var startX = (evt.x || evt.clientX);
+        var startY = (evt.y || evt.clientY);
+        var rectangleDiv = document.createElement("div");
+        rectangleDiv.style.cssText = "position: absolute;width: 0px;height: 0px;font-size: 0px;margin: 0px;padding: 0px;border: 1px dashed #0099FF;background-color: #C3D5ED;z-index: 1000;filter: alpha(opacity:60);opacity: 0.6;display: none;";
+        rectangleDiv.id = "selectDiv";
+        document.body.appendChild(rectangleDiv);
+        rectangleDiv.style.left = startX + "px";
+        rectangleDiv.style.top = startY + "px";
+        var _x = null;
+        var _y = null;
+        clearEventBubble(evt);
+
+        $('body').mousemove(function () {
+            evt = window.event || arguments[0];
+            if (isSelect) {
+                if (rectangleDiv.style.display == "none") {
+                    rectangleDiv.style.display = "";
+                }
+                _x = (evt.x || evt.clientX);
+                _y = (evt.y || evt.clientY);
+                rectangleDiv.style.left = Math.min(_x, startX) + "px";
+                rectangleDiv.style.top = Math.min(_y, startY) + "px";
+                rectangleDiv.style.width = Math.abs(_x - startX) + "px";
+                rectangleDiv.style.height = Math.abs(_y - startY) + "px";
+                // ---------------- 关键算法 ---------------------
+                var rectangleLeft = rectangleDiv.offsetLeft, rectangleTop = rectangleDiv.offsetTop;
+                var rectangleWidth = rectangleDiv.offsetWidth, rectangleHeight = rectangleDiv.offsetHeight;
+                for (var i = 0; i < boxList.length; i++) {
+                    var boxRight = boxList[i].offsetWidth + boxList[i].offsetLeft;
+                    var boxBottom = boxList[i].offsetHeight + boxList[i].offsetTop;
+                    if (boxRight > rectangleLeft
+                        && boxBottom > rectangleTop
+                        && boxList[i].offsetLeft < rectangleLeft + rectangleWidth
+                        && boxList[i].offsetTop < rectangleTop + rectangleHeight) {
+                        if (boxList[i].className.indexOf("seled") == -1) {
+                            boxList[i].className = boxList[i].className + " seled";
+                        }
+                    } else {
+                        if (boxList[i].className.indexOf("seled") != -1) {
+                            boxList[i].className = "fileDiv";
+                        }
+                    }
+                }
+            }
+            clearEventBubble(evt);
+        });
+
+        $('body').mouseup(function () {
+            isSelect = false;
+            if (rectangleDiv) {
+                document.body.removeChild(rectangleDiv);
+                selectedBoxList = $.grep(boxList, function (e, i) {
+                    return e.className.indexOf("seled") > -1;
+                });
+                showSelDiv(selectedBoxList);
+            }
+            boxList = null, _x = null, _y = null, rectangleDiv = null, startX = null, startY = null, evt = null;
+        })
+
+        $(':not(.seled)').one('click',function (ev) {
+            selectedBoxList.forEach(function (e, i) {
+                e.className = "fileDiv";
+            })
+            selectedBoxList = [];
+        });
+    });
+
+
+})();
+
+function clearEventBubble(evt) {
+    if (evt.stopPropagation) evt.stopPropagation(); else evt.cancelBubble = true;
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue = false;
+}
+
+function showSelDiv(arr) {
+    var count = 0;
+    var selInfo = "";
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i].className.indexOf("seled") > -1) {
+            count++;
+            selInfo += arr[i].innerHTML + "\n";
+        }
+    }
+    // $(arr).each(function(index){
+    //     $(this).myDrag({
+    //         randomPosition:true,
+    //         direction:'all',
+    //         handler:false,
+    //         parent:'parent'
+    //     });
+    // });
+    // alert("共选择 " + count + " 个文件，分别是：" + selInfo);
+}</script>
+</body>
+</html>

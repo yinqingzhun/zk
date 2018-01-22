@@ -39,7 +39,7 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
     @RequestMapping({"", "/"})
     public String index(Model model) {
 
-        helloService.hello();
+        //helloService.hello();
 
         //Student student = new Student();
         //student.setClassId(1);
@@ -58,7 +58,7 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
         model.addAttribute("message", JsonHelper.serialize(studentService.getList(), true));
 
 
-        return "index";
+        return "demo";
     }
 
     @RequestMapping("index")

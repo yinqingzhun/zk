@@ -20,15 +20,15 @@
     </parent>
 
     <dependencies>
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>-->
         <dependency>
             <groupId>de.invesdwin</groupId>
             <artifactId>invesdwin-instrument</artifactId>
             <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+            <version>1.9.22</version>
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>

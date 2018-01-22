@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 
 @Component
 @Aspect
+@DeclarePrecedence("DataSourceAspect,AnnotationTransactionAspect")
 public class DataSourceAspect {
     Logger logger = LoggerFactory.getLogger(DataSourceAspect.class);
 
@@ -56,8 +57,10 @@ public class DataSourceAspect {
             return joinpoint.proceed(joinpoint.getArgs());
         } else {
             System.out.println("print[Annotation]JointPoint Around start: " + joinpoint.getSignature() + "," + joinpoint.getStaticPart().getKind());
+            DataSourceContextHolder.push(dbChoosing.value());
             Object object = joinpoint.proceed(joinpoint.getArgs());
             System.out.println("print[Annotation]JointPoint Around end: " + joinpoint.getSignature() + "," + joinpoint.getStaticPart().getKind());
+            DataSourceContextHolder.pop();
             return object;
         }
     }
