@@ -8,29 +8,32 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 import javax.sql.DataSource;
-
-//@Configuration
+@Configuration
+@Qualifier("dbConfig")
 public class DbConfig {
-    @Value("${app.datasource.mdb.type}")
-    private Class<? extends DataSource> dataSourceType;
+    //@Value("${spring.datasource.type}")
+    //private Class<? extends DataSource> dataSourceType;
 
 
     @Bean
     @Primary
-    @ConfigurationProperties(prefix = "app.datasource.mdb")
+    @ConfigurationProperties(prefix = "spring.datasource")
     DataSourceProperties dataSourcePropertiesForTicketUser() {
 
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
         return dataSourceProperties;
     }
-
-    @Bean(name = "mdb")
-    @Qualifier("mdb")
-    @ConfigurationProperties(prefix = "app.datasource.mdb")
+    @Primary
+    @Bean(name = "mydb")
+    @Qualifier("mydb")
     public DataSource ticketUserDataSource() {
         DataSource dataSource = dataSourcePropertiesForTicketUser().initializeDataSourceBuilder().build();
         return dataSource;
     }
+
+
 }

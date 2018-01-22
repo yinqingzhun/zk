@@ -1,7 +1,7 @@
 package qs.config.db;
 
 public enum EnumDataSourceName {
-    TICKET_BASE("ticket-base"), TICKET_ORDER("ticket-order"), TICKET_USER("ticket-user");
+    TICKET_BASE("mydb"), TICKET_ORDER("mydb2");
     private String name;
 
     EnumDataSourceName(String name) {
