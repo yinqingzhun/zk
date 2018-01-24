@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 /**
  * Created by yinqingzhun on 2017/09/05.
  */
-@Service
+/*@Service
 public class WoaitingshuDownloadService {
     Logger logger = LoggerFactory.getLogger(WoaitingshuDownloadService.class);
     String domain = "http://www.woaitingshu.com";
@@ -82,4 +82,4 @@ public class WoaitingshuDownloadService {
         }
 
     }
-}
+}*/

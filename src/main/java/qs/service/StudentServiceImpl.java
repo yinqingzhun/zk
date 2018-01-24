@@ -12,7 +12,7 @@ import qs.repository.StudentRepository;
 
 import java.util.List;
 import java.util.UUID;
-@DbChoosing(EnumDataSourceName.TICKET_BASE)
+
 @Service
 public class StudentServiceImpl implements StudentService {
     Logger logger = LoggerFactory.getLogger(StudentService.class);
@@ -30,14 +30,15 @@ public class StudentServiceImpl implements StudentService {
         return value;
     }
 
-
-    @Transactional
+    //@DbChoosing(EnumDataSourceName.TICKET_BASE)
+    //@Transactional
     Student failedToSave(Student student) {
         Student value = studentRepository.save(student);
         int i = 1 / 0;
         return value;
     }
-
+    @DbChoosing(EnumDataSourceName.TICKET_BASE)
+    @Transactional
     public void generate() {
         Student student = new Student();
         student.setName(UUID.randomUUID().toString());

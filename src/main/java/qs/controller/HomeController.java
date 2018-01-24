@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import qs.model.ReturnValue;
 import qs.service.HelloService;
 import qs.service.StudentService;
-import qs.service.WoaitingshuDownloadService;
 import qs.util.JsonHelper;
 
 import javax.annotation.PostConstruct;
@@ -55,7 +54,7 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
 
 //        log.info("log info - {}", serviceList.stream().map(p -> p.getClass().getSimpleName()).reduce("", (a, b) -> a + "," + b));
 
-        model.addAttribute("message", JsonHelper.serialize(studentService.getList(), true));
+        //model.addAttribute("message", JsonHelper.serialize(studentService.getList(), true));
 
 
         return "demo";
@@ -100,12 +99,12 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
 
     @PostConstruct
     public void init() {
-        log.info("lifecycle:init");
+        log.info("lifecycle:PostConstruct");
     }
 
     @PreDestroy
     public void destroy() {
-        log.info("lifecycle:destroy");
+        log.info("lifecycle:PreDestroy");
     }
 
     public void initMethod() {

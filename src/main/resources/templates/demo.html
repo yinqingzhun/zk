@@ -2,165 +2,316 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>js实现元素框选</title></head>
-<style>    body {
-    padding: 100px;
-}
+    <title>js</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+    <style>
+        body {
+            padding: 100px;
+        }
 
-.fileDiv {
-    float: left;
-    width: 100px;
-    height: 100px;
-    text-align: center;
-    line-height: 100px;
-    font-size: 12px;
-    border: 1px solid #ccc;
-    margin-right: 10px;
-    margin-bottom: 10px;
-}
+        .unit {
+            position: absolute;
+            font-size: 12px;
+            border: 1px solid #ccc;
+            font-family: '宋体';
+        }
 
-.seled {
-    border: 1px solid red;
-    background-color: #D6DFF7;
-}
+        .selected {
+            border: 1px solid red;
+            background-color: #D6DFF7;
+        }
 
-h3 {
-    text-align: center;
-    padding-bottom: 50px
-}</style>
+        h3 {
+            text-align: center;
+            padding-bottom: 50px
+        }
 
-
+        form input[type=text] {
+            width: 100px;
+        }
+    </style>
+</head>
 <body>
-<h3>按下鼠标左键不放，框选查看效果</h3>
-<div id="container" style="position:relative;">
-    <div class="fileDiv">file1</div>
-    <div class="fileDiv">file2</div>
-    <div class="fileDiv">file3</div>
-    <div class="fileDiv">file4</div>
-    <div class="fileDiv">file5</div>
-    <div class="fileDiv">file6</div>
-    <div class="fileDiv">file7</div>
-    <div class="fileDiv">file8</div>
-    <div class="fileDiv">file9</div>
-    <div class="fileDiv">file10</div>
-    <div class="fileDiv">file11</div>
-    <div class="fileDiv">file12</div>
-    <div class="fileDiv">file13</div>
-    <div class="fileDiv">file14</div>
-    <div class="fileDiv">file15</div>
-    <div class="fileDiv">file16</div>
-    <div class="fileDiv">file17</div>
+<div>container pos:<span id="s1"></span></div>
+<div>box pos:<span id="s2"></span></div>
+<div>
+    <button data-align="left" name="align">left</button>
+    <button data-align="right" name="align">right</button>
+    <button data-align="middle" name="align">middle</button>
+    <button name="newText">new</button>
+</div>
+<div>
+    <form id="font" class="layui-form" action="#">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">颜色</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="color" lay-verify="required|colorHexValue" placeholder="请输入色值，如：#FFCC00"
+                           autocomplete="off" style="width:150px;border:1px solid black;display:inline-block;"
+                           class="layui-input jscolor {hash:true}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">字号</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="size" lay-verify="required" autocomplete="off" class="layui-input">
+                    <button class="layui-btn" name="size" data-size="large">+</button>
+                    <button class="layui-btn" name="size" data-size="small">-</button>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">字体</label>
+            <div class="layui-input-block">
+                <select name="family">
+                    <option value="宋体">宋体</option>
+                    <option value="黑体">黑体</option>
+                    <option value="微软雅黑">微软雅黑</option>
+                    <option value="隶书">隶书</option>
+                    <option value="楷书">楷书</option>
+                </select>
+
+            </div>
+        </div>
+    </form>
+</div>
+<div id="container" style="position:relative;border:1px slategray solid;height: 330px;">
+    <div class="unit">file1</div>
+    <div class="unit" style="left:110px">file2</div>
+    <div class="unit" style="left:220px">file3</div>
+    <div class="unit" style="top:110px;">file4</div>
+    <div class="unit" style="left:110px;top:110px;">file5</div>
+    <div class="unit" style="left:220px;top:110px;">file6</div>
+
 </div>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/jscolor.js}"></script>
 <script th:src="@{/js/drag.js}"></script>
-<script type="text/javascript">    (function () {
-
-
-    $('body').mousedown(function () {
-        var boxList = [];
-        var selectedBoxList = [];
-        var fileNodes = $('#container>*');
-        for (var i = 0; i < fileNodes.length; i++) {
-            if (fileNodes[i].className.indexOf("fileDiv") != -1) {
-                fileNodes[i].className = "fileDiv";
-                boxList.push(fileNodes[i]);
-            }
+<script type="text/javascript">
+    (function () {
+        function setForm(ele) {
+            var form = document.getElementById('form');
+            var e = $(ele);
+            form.color.value = e.css('color');
+            form.family = e.css('font-family');
+            form.size = e.css('font-size');
         }
-        var isSelect = true;
-        var evt = window.event || arguments[0];
-        var startX = (evt.x || evt.clientX);
-        var startY = (evt.y || evt.clientY);
-        var rectangleDiv = document.createElement("div");
-        rectangleDiv.style.cssText = "position: absolute;width: 0px;height: 0px;font-size: 0px;margin: 0px;padding: 0px;border: 1px dashed #0099FF;background-color: #C3D5ED;z-index: 1000;filter: alpha(opacity:60);opacity: 0.6;display: none;";
-        rectangleDiv.id = "selectDiv";
-        document.body.appendChild(rectangleDiv);
-        rectangleDiv.style.left = startX + "px";
-        rectangleDiv.style.top = startY + "px";
-        var _x = null;
-        var _y = null;
-        clearEventBubble(evt);
 
-        $('body').mousemove(function () {
-            evt = window.event || arguments[0];
-            if (isSelect) {
-                if (rectangleDiv.style.display == "none") {
-                    rectangleDiv.style.display = "";
-                }
-                _x = (evt.x || evt.clientX);
-                _y = (evt.y || evt.clientY);
-                rectangleDiv.style.left = Math.min(_x, startX) + "px";
-                rectangleDiv.style.top = Math.min(_y, startY) + "px";
-                rectangleDiv.style.width = Math.abs(_x - startX) + "px";
-                rectangleDiv.style.height = Math.abs(_y - startY) + "px";
-                // ---------------- 关键算法 ---------------------
-                var rectangleLeft = rectangleDiv.offsetLeft, rectangleTop = rectangleDiv.offsetTop;
-                var rectangleWidth = rectangleDiv.offsetWidth, rectangleHeight = rectangleDiv.offsetHeight;
-                for (var i = 0; i < boxList.length; i++) {
-                    var boxRight = boxList[i].offsetWidth + boxList[i].offsetLeft;
-                    var boxBottom = boxList[i].offsetHeight + boxList[i].offsetTop;
-                    if (boxRight > rectangleLeft
-                        && boxBottom > rectangleTop
-                        && boxList[i].offsetLeft < rectangleLeft + rectangleWidth
-                        && boxList[i].offsetTop < rectangleTop + rectangleHeight) {
-                        if (boxList[i].className.indexOf("seled") == -1) {
-                            boxList[i].className = boxList[i].className + " seled";
-                        }
-                    } else {
-                        if (boxList[i].className.indexOf("seled") != -1) {
-                            boxList[i].className = "fileDiv";
-                        }
-                    }
+        function sort() {
+            var a = [];
+            for (i = 0; i < arguments.length; i++)
+                a = a.concat(arguments[i]);
+
+            a.sort(function (a, b) {
+                return a - b;
+            });
+            return a;
+        }
+
+        function between(x1, x2, v) {
+            var x = sort(x1, x2);
+            x1 = x[0];
+            x2 = x[1];
+            return v >= x1 && v <= x2;
+        }
+
+        function cross(x1, x2, y1, y2) {
+            if (Math.abs(x1 - x2) > Math.abs(y1 - y2))
+                return between(x1, x2, y1) || between(x1, x2, y2);
+            return between(y1, y2, x1) || between(y1, y2, x2);
+        }
+
+        function select() {
+            var moves = [];
+            var parentContainer = $('#container');
+            var boxList = [];
+            var fileNodes = $('#container>*');
+            for (var i = 0; i < fileNodes.length; i++) {
+                if (fileNodes[i].className.indexOf("unit") != -1) {
+                    fileNodes[i].className = "unit";
+                    boxList.push(fileNodes[i]);
                 }
             }
+            var isSelect = true;
+            var evt = window.event || arguments[0];
+            var startX = (evt.x || evt.clientX);
+            var startY = (evt.y || evt.clientY);
+            var rectangleDiv = document.createElement("div");
+            rectangleDiv.style.cssText = "position: absolute;width: 0px;height: 0px;font-size: 0px;margin: 0px;padding: 0px;border: 1px dashed #0099FF;background-color: #C3D5ED;z-index: 1000;filter: alpha(opacity:60);opacity: 0.6;display: none;";
+            rectangleDiv.id = "selectDiv";
+            document.body.appendChild(rectangleDiv);
+            rectangleDiv.style.left = startX + "px";
+            rectangleDiv.style.top = startY + "px";
+            var _x, _y;
             clearEventBubble(evt);
-        });
 
-        $('body').mouseup(function () {
-            isSelect = false;
-            if (rectangleDiv) {
-                document.body.removeChild(rectangleDiv);
-                selectedBoxList = $.grep(boxList, function (e, i) {
-                    return e.className.indexOf("seled") > -1;
-                });
-                showSelDiv(selectedBoxList);
+            function calSelect() {
+                evt = window.event || arguments[0];
+                if (isSelect) {
+                    if (rectangleDiv.style.display == "none") {
+                        rectangleDiv.style.display = "";
+                    }
+                    _x = (evt.x || evt.clientX);
+                    _y = (evt.y || evt.clientY);
+                    rectangleDiv.style.left = Math.min(_x, startX) + "px";
+                    rectangleDiv.style.top = Math.min(_y, startY) + "px";
+                    rectangleDiv.style.width = Math.abs(_x - startX) + "px";
+                    rectangleDiv.style.height = Math.abs(_y - startY) + "px";
+                    // ---------------- 关键算法 ---------------------
+                    var rectangleLeft = rectangleDiv.offsetLeft,
+                        rectangleTop = rectangleDiv.offsetTop,
+                        rectangleWidth = rectangleDiv.offsetWidth,
+                        rectangleHeight = rectangleDiv.offsetHeight,
+                        rectangleRight = rectangleLeft + rectangleWidth,
+                        rectangleBottom = rectangleTop + rectangleHeight;
+
+                    var containerLeft = parentContainer.get(0).offsetLeft,
+                        containerTop = parentContainer.get(0).offsetTop,
+                        containerWidth = parentContainer.get(0).offsetWidth,
+                        containerHeight = parentContainer.get(0).offsetHeight;
+
+                    // $('#s1').text(rectangleLeft + ',' + rectangleTop + ',' + rectangleRight + ',' + rectangleBottom);
+                    // $('#s2').text((boxList[0].offsetLeft + rectangleLeft) + ',' + (boxList[0].offsetTop + rectangleTop));
+
+                    if (cross(containerLeft, containerLeft + containerWidth, rectangleLeft, rectangleRight) && cross(containerTop, containerTop + containerHeight, rectangleTop, rectangleBottom))
+                        for (var i = 0; i < boxList.length; i++) {
+                            var boxLeft = boxList[i].offsetLeft + containerLeft;
+                            var boxTop = boxList[i].offsetTop + containerTop;
+
+                            var boxRight = boxList[i].offsetWidth + boxLeft;
+                            var boxBottom = boxList[i].offsetHeight + boxTop;
+                            //if (boxRight > rectangleLeft && boxBottom > rectangleTop && boxLeft < rectangleLeft + rectangleWidth && boxTop < rectangleTop + rectangleHeight)
+                            if (cross(boxLeft, boxRight, rectangleLeft, rectangleRight) && cross(boxTop, boxBottom, rectangleTop, rectangleBottom)) {
+                                if (boxList[i].className.indexOf("selected") == -1) {
+                                    boxList[i].className = boxList[i].className + " selected";
+                                }
+                            } else {
+                                if (boxList[i].className.indexOf("selected") != -1) {
+                                    boxList[i].className = "unit";
+                                }
+                            }
+                        }
+                }
+                clearEventBubble(evt);
             }
-            boxList = null, _x = null, _y = null, rectangleDiv = null, startX = null, startY = null, evt = null;
-        })
 
-        $(':not(.seled)').one('click',function (ev) {
-            selectedBoxList.forEach(function (e, i) {
-                e.className = "fileDiv";
+            function stopSelect() {
+                isSelect = false;
+                if (rectangleDiv) {
+                    document.body.removeChild(rectangleDiv);
+                    var selectedBoxList = $(boxList).filter(".selected");
+
+                    if (selectedBoxList.length > 0) {
+                        $(document).off('mousedown mouseup mousemove');
+                    }
+                    $(selectedBoxList).each(function (index) {
+                        var drag = $(this).myDrag({
+                            randomPosition: true,
+                            direction: 'all',
+                            handler: false,
+                            randomPosition: false
+                        });
+
+                        moves.push(drag);
+                    });
+                }
+                boxList = null, _x = null, _y = null, rectangleDiv = null, startX = null, startY = null, evt = null;
+            }
+
+            function clearSelect(ev) {
+
+                if ($(ev.target).is('.unit,button,a'))
+                    return;
+
+                $('.selected').removeClass().addClass('unit')
+
+                $.each(moves, function (i, e) {
+                    e.stop();
+                })
+                $(document).off('click', clearSelect);
+                $(document).mousedown(select);
+            }
+
+            $(document).on('mousemove', calSelect);
+
+            $(document).on('mouseup', function (e) {
+                calSelect(e);
+                stopSelect(e);
             })
-            selectedBoxList = [];
+
+
+            $(document).on('click', clearSelect);
+
+        }
+
+        $(document).mousedown(select);
+
+        $('button[name=align]').click(function (e) {
+            align = e.target.dataset.align;
+            var selectedBoxList = $('.selected');
+            if (selectedBoxList.length == 0) return;
+            var minLeft = sort(selectedBoxList.map(function (i, e) {
+                return e.offsetLeft
+            }).toArray())[0];
+
+            var maxRight = sort(selectedBoxList.map(function (i, e) {
+                return e.offsetLeft + e.offsetWidth
+            }).toArray())[selectedBoxList.length - 1];
+
+            if (align == 'left') {
+                selectedBoxList.css({left: minLeft})
+            } else if (align == 'right') {
+                selectedBoxList.each(function (i, e) {
+                    $(e).css('left', maxRight - e.offsetWidth);
+                })
+
+            } else if (align == 'middle') {
+                var m = (minLeft + maxRight) / 2;
+
+                selectedBoxList.each(function (i, e) {
+                    $(e).css('left', m - e.offsetWidth / 2);
+                })
+
+            }
         });
+
+        $('button[name=newText]').click(function (e) {
+
+            var box = document.createElement('div');
+            box.className = 'unit';
+            box.innerText = '新节点';
+            $('#container').append(box.outerHTML);
+
+        });
+
+        $('button[name=size]').click(function (e) {
+            var op = e.target.dataset.size;
+            var oldSize = $(e).parent().find('input[name=size]').val().replace('px', '');
+            if (op == 'large') {
+                oldSize++;
+            } else if (op == 'small') {
+                oldSize--;
+            }
+
+
+        });
+
+
+    })();
+
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form, layer = layui.layer;
     });
 
-
-})();
-
-function clearEventBubble(evt) {
-    if (evt.stopPropagation) evt.stopPropagation(); else evt.cancelBubble = true;
-    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue = false;
-}
-
-function showSelDiv(arr) {
-    var count = 0;
-    var selInfo = "";
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i].className.indexOf("seled") > -1) {
-            count++;
-            selInfo += arr[i].innerHTML + "\n";
-        }
+    function clearEventBubble(evt) {
+        if (evt.stopPropagation) evt.stopPropagation(); else evt.cancelBubble = true;
+        if (evt.preventDefault) evt.preventDefault(); else evt.returnValue = false;
     }
-    // $(arr).each(function(index){
-    //     $(this).myDrag({
-    //         randomPosition:true,
-    //         direction:'all',
-    //         handler:false,
-    //         parent:'parent'
-    //     });
-    // });
-    // alert("共选择 " + count + " 个文件，分别是：" + selInfo);
-}</script>
+
+
+</script>
 </body>
 </html>
