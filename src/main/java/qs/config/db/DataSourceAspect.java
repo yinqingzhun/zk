@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 
 @Component
 @Aspect
-@DeclarePrecedence("DataSourceAspect,AnnotationTransactionAspect")
+@DeclarePrecedence("DataSourceAspect,*")
 public class DataSourceAspect {
     Logger logger = LoggerFactory.getLogger(DataSourceAspect.class);
 
@@ -26,7 +26,7 @@ public class DataSourceAspect {
         if (dbChoosing == null) {
             Method method = ((MethodSignature) point.getSignature()).getMethod();
             try {
-                //method = point.getTarget().getClass().getMethod(method.getName(), method.getParameterTypes());
+                method = point.getTarget().getClass().getMethod(method.getName(), method.getParameterTypes());
                 if (method != null) {
                     dbChoosing = method.getAnnotation(DbChoosing.class);
                 }
@@ -37,17 +37,6 @@ public class DataSourceAspect {
         return dbChoosing;
     }
 
-    //@Before("@annotation(d)")
-    //public void printAnnotationJointPointBefore(JoinPoint joinpoint,DbChoosing d) {
-    //    //if (joinpoint.getStaticPart().getKind().contains("execution"))
-    //    System.out.println("print[Annotation]JointPoint Before: " + joinpoint.getSignature());
-    //}
-    //
-    //@After("@annotation(DbChoosing)")
-    //public void printAnnotationJointPointAfter(JoinPoint joinpoint) {
-    //    //if (joinpoint.getStaticPart().getKind().contains("execution"))
-    //    System.out.println("print[Annotation]JointPoint After: " + joinpoint.getSignature());
-    //}
 
 
     @Around("pointCut()")
@@ -65,30 +54,5 @@ public class DataSourceAspect {
         }
     }
 
-    //@AfterReturning("@annotation(DbChoosing)")
-    //public void printAnnotationJointPointReturning(JoinPoint joinpoint) {
-    //    //if (joinpoint.getStaticPart().getKind().contains("execution"))
-    //    System.out.println("print[Annotation]JointPoint Returning: " + joinpoint.getSignature());
-    //}
-
-    //@Before("@within(qs.config.db.DbChoosing)")
-    //public void printWithinJointPoint(JoinPoint joinpoint) {
-    //    System.out.println("print[Within]JointPoint: " + joinpoint.getSignature());
-    //}
-
-    //@Before("pointCut()")
-    //public void setReadDataSourceType(JoinPoint point) {
-    //
-    //    DbChoosing dbChoosing = getDbChoosing(point);
-    //    if (dbChoosing != null)
-    //        DataSourceContextHolder.push(dbChoosing.value());
-    //}
-    //
-    //@After("pointCut()")
-    //public void unsetReadDataSourceType(JoinPoint point) {
-    //    DbChoosing dbChoosing = getDbChoosing(point);
-    //    if (dbChoosing != null)
-    //        DataSourceContextHolder.pop();
-    //}
 
 }

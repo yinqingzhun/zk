@@ -19,8 +19,7 @@ import qs.config.db.DataSourceAspect;
  * Created by yinqingzhun on 2017/08/29.
  */
 @SpringBootApplication(exclude = {ErrorMvcAutoConfiguration.class})
-@EnableLoadTimeWeaving
-        (aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
+@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
 public class Application extends SpringBootServletInitializer {
 
 
@@ -36,12 +35,6 @@ public class Application extends SpringBootServletInitializer {
         SpringApplicationBuilder builder = new SpringApplicationBuilder();
         builder.sources(Application.class).run();
     }
-
-    //@Bean
-    //public DataSourceAspect dataSourceAspect() {
-    //    DataSourceAspect aspect = Aspects.aspectOf(DataSourceAspect.class);
-    //    return aspect;
-    //}
 
 
 }

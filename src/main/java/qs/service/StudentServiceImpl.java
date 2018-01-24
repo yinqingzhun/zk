@@ -31,13 +31,14 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    @Transactional
+    //@Transactional
     Student failedToSave(Student student) {
         Student value = studentRepository.save(student);
         int i = 1 / 0;
         return value;
     }
-
+    @DbChoosing(EnumDataSourceName.TICKET_BASE)
+    @Transactional
     public void generate() {
         Student student = new Student();
         student.setName(UUID.randomUUID().toString());
