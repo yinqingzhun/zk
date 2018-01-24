@@ -12,6 +12,7 @@
         .unit {
             position: absolute;
             font-size: 12px;
+            color: #333;
             border: 1px solid #ccc;
             font-family: '宋体';
         }
@@ -29,6 +30,15 @@
         form input[type=text] {
             width: 100px;
         }
+
+        .layui-form-item .layui-input-inline {
+            width: auto;
+        }
+
+        .layui-form-label {
+            width: auto;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -44,36 +54,39 @@
     <form id="font" class="layui-form" action="#">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">颜色</label>
+                <label class="layui-form-label">颜色：</label>
                 <div class="layui-input-inline">
                     <input type="text" name="color" lay-verify="required|colorHexValue" placeholder="请输入色值，如：#FFCC00"
-                           autocomplete="off" style="width:150px;border:1px solid black;display:inline-block;"
+                           autocomplete="off" style="width:100px;border:1px solid black;display:inline-block;"
                            class="layui-input jscolor {hash:true}">
                 </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">字号</label>
-                <div class="layui-input-inline">
-                    <input type="hidden" name="size" lay-verify="required" autocomplete="off" class="layui-input">
-                    <button class="layui-btn" name="size" data-size="large">+</button>
-                    <button class="layui-btn" name="size" data-size="small">-</button>
+                <div class="layui-inline">
+                    <label class="layui-form-label">字号：</label>
+                    <div class="layui-input-inline">
+                        <input type="hidden" name="size" lay-verify="required" autocomplete="off" class="layui-input">
+                        <button class="layui-btn layui-btn-primary" name="size" data-op="large">字号 +</button>
+                        <button class="layui-btn layui-btn-primary" name="size" data-op="small">字号 -</button>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">字体：</label>
+                    <div class="layui-input-inline">
+                        <select name="family">
+                            <option value="宋体">宋体</option>
+                            <option value="黑体">黑体</option>
+                            <option value="微软雅黑">微软雅黑</option>
+                            <option value="隶书">隶书</option>
+                            <option value="楷书">楷书</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">字体</label>
-            <div class="layui-input-block">
-                <select name="family">
-                    <option value="宋体">宋体</option>
-                    <option value="黑体">黑体</option>
-                    <option value="微软雅黑">微软雅黑</option>
-                    <option value="隶书">隶书</option>
-                    <option value="楷书">楷书</option>
-                </select>
 
-            </div>
+        </div>
+        <div class="layui-form-item">
+
         </div>
     </form>
 </div>
@@ -86,8 +99,8 @@
     <div class="unit" style="left:220px;top:110px;">file6</div>
 
 </div>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
 <script th:src="@{/layui/layui.js}"></script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
 <script th:src="@{/js/jscolor.js}"></script>
 <script th:src="@{/js/drag.js}"></script>
 <script type="text/javascript">
@@ -247,6 +260,13 @@
 
         }
 
+        function getOnlySelectedElement() {
+            var selectedList = $('.selected');
+            if (selectedList && selectedList.length == 1)
+                return selectedList.eq(0);
+            return null;
+        }
+
         $(document).mousedown(select);
 
         $('button[name=align]').click(function (e) {
@@ -287,18 +307,35 @@
 
         });
 
-        $('button[name=size]').click(function (e) {
-            var op = e.target.dataset.size;
-            var oldSize = $(e).parent().find('input[name=size]').val().replace('px', '');
-            if (op == 'large') {
-                oldSize++;
-            } else if (op == 'small') {
-                oldSize--;
-            }
 
+        $('button[name=size]').click(function (e) {
+            var selected = getOnlySelectedElement();
+            if (selected) {
+                var oldSize = selected.css('font-size').replace('px', '');
+                if (e.target.dataset.op == 'large') {
+                    oldSize++;
+                } else if (e.target.dataset.op == 'small') {
+                    oldSize--;
+                }
+                selected.css('font-size', oldSize + 'px');
+            }
 
         });
 
+        $('input[name=color]').change(function (e) {
+            var selected = getOnlySelectedElement();
+            if (selected) {
+                selected.css('color', e.target.value);
+            }
+        });
+
+
+        $('select[name=family]').change(function (e) {
+            var selected = getOnlySelectedElement();
+            if (selected) {
+                selected.css('font-family', e.target.value);
+            }
+        });
 
     })();
 
