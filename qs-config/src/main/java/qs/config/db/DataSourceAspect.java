@@ -10,6 +10,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 @Component
 @Aspect
@@ -26,17 +27,19 @@ public class DataSourceAspect {
         if (dbChoosing == null) {
             Method method = ((MethodSignature) point.getSignature()).getMethod();
             try {
-                method = point.getTarget().getClass().getMethod(method.getName(), method.getParameterTypes());
-                if (method != null) {
-                    dbChoosing = method.getAnnotation(DbChoosing.class);
-                }
+
+                method = Optional.ofNullable(point.getTarget().getClass().getMethod(method.getName(), method.getParameterTypes())).orElse(method);
+
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.debug(e.getMessage());
+            }
+
+            if (method != null) {
+                dbChoosing = method.getAnnotation(DbChoosing.class);
             }
         }
         return dbChoosing;
     }
-
 
 
     @Around("pointCut()")

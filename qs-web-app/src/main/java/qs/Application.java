@@ -16,17 +16,17 @@ import java.util.Optional;
  * Created by yinqingzhun on 2017/08/29.
  */
 @SpringBootApplication(exclude = {ErrorMvcAutoConfiguration.class})
-//@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
+@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
 public class Application extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        //DynamicInstrumentationLoader.waitForInitialized(); //dynamically attach java agent to jvm if not already present
-        //DynamicInstrumentationLoader.initLoadTimeWeavingContext(); //weave all classes before they are loaded as beans
+        DynamicInstrumentationLoader.waitForInitialized(); //dynamically attach java agent to jvm if not already present
+        DynamicInstrumentationLoader.initLoadTimeWeavingContext(); //weave all classes before they are loaded as beans
         return builder.sources(Application.class);
     }
 
     public static void main(String[] args) {
-        //DynamicInstrumentationLoader.waitForInitialized(); //dynamically attach java agent to jvm if not already present
-        //DynamicInstrumentationLoader.initLoadTimeWeavingContext(); //weave all classes before they are loaded as beans
+        DynamicInstrumentationLoader.waitForInitialized(); //dynamically attach java agent to jvm if not already present
+        DynamicInstrumentationLoader.initLoadTimeWeavingContext(); //weave all classes before they are loaded as beans
         SpringApplicationBuilder builder = new SpringApplicationBuilder();
         builder.sources(Application.class).run();
     }

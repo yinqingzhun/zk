@@ -30,7 +30,7 @@ public class StudentServiceImpl implements StudentService {
         return value;
     }
 
-    //@DbChoosing(EnumDataSourceName.TICKET_BASE)
+    @DbChoosing(EnumDataSourceName.TICKET_BASE)
     //@Transactional
     Student failedToSave(Student student) {
         Student value = studentRepository.save(student);
