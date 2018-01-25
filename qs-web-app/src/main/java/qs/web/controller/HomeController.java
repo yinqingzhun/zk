@@ -1,7 +1,6 @@
-package qs.controller;
+package qs.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -21,7 +20,6 @@ import qs.util.JsonHelper;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
 
 /**
  * Created by yinqingzhun on 2017/08/29.

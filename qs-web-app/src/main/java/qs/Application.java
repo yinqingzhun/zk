@@ -18,7 +18,6 @@ import java.util.Optional;
 @SpringBootApplication(exclude = {ErrorMvcAutoConfiguration.class})
 //@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
 public class Application extends SpringBootServletInitializer {
-
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         //DynamicInstrumentationLoader.waitForInitialized(); //dynamically attach java agent to jvm if not already present
         //DynamicInstrumentationLoader.initLoadTimeWeavingContext(); //weave all classes before they are loaded as beans
@@ -31,13 +30,6 @@ public class Application extends SpringBootServletInitializer {
         SpringApplicationBuilder builder = new SpringApplicationBuilder();
         builder.sources(Application.class).run();
     }
-
-    //@Bean
-    //public SimpleProfiler simpleProfiler() {
-    //    SimpleProfiler aspect = new SimpleProfiler();
-    //    aspect.setOrder(1);
-    //    return aspect;
-    //}
 
 
 }

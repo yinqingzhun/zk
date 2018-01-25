@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import qs.web.JwtAuthenticationTokenFilter;
+import qs.web.jwt.JwtAuthenticationTokenFilter;
 
 import java.util.concurrent.Executors;
 

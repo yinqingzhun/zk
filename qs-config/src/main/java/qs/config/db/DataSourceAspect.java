@@ -6,21 +6,19 @@ import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
 @Component
 @Aspect
-@Order(Ordered.HIGHEST_PRECEDENCE)
-//@DeclarePrecedence("DataSourceAspect,*")
+@DeclarePrecedence("DataSourceAspect,*")
 public class DataSourceAspect {
+    Logger logger = LoggerFactory.getLogger(DataSourceAspect.class);
 
     @Pointcut("execution(* qs.service..*(..))")
-    public void execService() {
+    public void pointCut() {
     }
 
     private DbChoosing getDbChoosing(JoinPoint point) {
@@ -40,19 +38,21 @@ public class DataSourceAspect {
     }
 
 
-    @Around("execService()")
+
+    @Around("pointCut()")
     public Object printAnnotationJointPointAround(ProceedingJoinPoint joinpoint) throws Throwable {
         DbChoosing dbChoosing = getDbChoosing(joinpoint);
-        System.out.println("print[Annotation]JointPoint Around start: " + joinpoint.getSignature() + "," + joinpoint.getStaticPart().getKind());
-        if (dbChoosing != null)
+        if (dbChoosing == null) {
+            return joinpoint.proceed(joinpoint.getArgs());
+        } else {
+            System.out.println("print[Annotation]JointPoint Around start: " + joinpoint.getSignature() + "," + joinpoint.getStaticPart().getKind());
             DataSourceContextHolder.push(dbChoosing.value());
-        Object object = joinpoint.proceed(joinpoint.getArgs());
-        System.out.println("print[Annotation]JointPoint Around end: " + joinpoint.getSignature() + "," + joinpoint.getStaticPart().getKind());
-        if (dbChoosing != null)
+            Object object = joinpoint.proceed(joinpoint.getArgs());
+            System.out.println("print[Annotation]JointPoint Around end: " + joinpoint.getSignature() + "," + joinpoint.getStaticPart().getKind());
             DataSourceContextHolder.pop();
-        return object;
+            return object;
+        }
     }
-
 
 
 }

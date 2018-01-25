@@ -1,4 +1,4 @@
-package qs.controller;
+package qs.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import qs.model.ReturnValue;
 import qs.model.User;
 import qs.service.AuthService;
-import qs.web.JwtAuthenticationRequest;
-import qs.web.JwtAuthenticationResponse;
+import qs.web.jwt.JwtAuthenticationRequest;
+import qs.web.jwt.JwtAuthenticationResponse;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 @DependsOn(value = "dbConfig")
 @Configuration
-@EnableTransactionManagement(order = Ordered.LOWEST_PRECEDENCE)                         //(mode = AdviceMode.ASPECTJ)
+@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
 @MapperScan("qs.persist")
 @Import(DbConfig.class)
 public class MybatisConfig implements TransactionManagementConfigurer, ApplicationContextAware {

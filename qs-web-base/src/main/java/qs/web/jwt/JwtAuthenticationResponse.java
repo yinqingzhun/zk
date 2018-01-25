@@ -1,4 +1,4 @@
-package qs.web;
+package qs.web.jwt;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package qs.web;
+package qs.web.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
