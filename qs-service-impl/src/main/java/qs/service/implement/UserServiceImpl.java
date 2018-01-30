@@ -1,4 +1,4 @@
-package qs.service;
+package qs.service.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

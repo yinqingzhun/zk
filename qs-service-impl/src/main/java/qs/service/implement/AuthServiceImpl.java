@@ -1,4 +1,4 @@
-package qs.service;
+package qs.service.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import qs.model.JwtUser;
 import qs.repository.UserRepository;
+import qs.service.AuthService;
 import qs.util.JwtTokenUtil;
 
 import java.util.Date;

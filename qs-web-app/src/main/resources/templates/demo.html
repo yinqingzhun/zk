@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>js</title>
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{/css/print/normalize.min.css}">
     <style>
         body {
             padding: 100px;
@@ -41,16 +42,17 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="event.returnValue = false;">
 <div>container pos:<span id="s1"></span></div>
 <div>box pos:<span id="s2"></span></div>
 <div>
     <button data-align="left" name="align">left</button>
     <button data-align="right" name="align">right</button>
     <button data-align="middle" name="align">middle</button>
-    <button name="newText">new</button>
+    <button name="newText">newText</button>
+    <button name="newImage">newImage</button>
 </div>
-<div>
+<div id="foo">
     <form id="font" class="layui-form" action="#">
         <div class="layui-form-item">
             <div class="layui-inline">
@@ -64,14 +66,14 @@
                     <label class="layui-form-label">字号：</label>
                     <div class="layui-input-inline">
                         <input type="hidden" name="size" lay-verify="required" autocomplete="off" class="layui-input">
-                        <button class="layui-btn layui-btn-primary" name="size" data-op="large">字号 +</button>
-                        <button class="layui-btn layui-btn-primary" name="size" data-op="small">字号 -</button>
+                        <button class="layui-btn layui-btn-primary" name="size" data-type="large">字号 +</button>
+                        <button class="layui-btn layui-btn-primary" name="size" data-type="small">字号 -</button>
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">字体：</label>
                     <div class="layui-input-inline">
-                        <select name="family">
+                        <select name="family" lay-filter="family">
                             <option value="宋体">宋体</option>
                             <option value="黑体">黑体</option>
                             <option value="微软雅黑">微软雅黑</option>
@@ -101,35 +103,56 @@
 </div>
 <script th:src="@{/layui/layui.js}"></script>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<script src="https://cdn.bootcss.com/jquery-tools/1.2.7/jquery.tools.min.js"></script>
 <script th:src="@{/js/jscolor.js}"></script>
 <script th:src="@{/js/drag.js}"></script>
+<script th:src="@{/js/vendor/html5-3.6-respond-1.1.0.min.js}"></script>
+<script th:src="@{/js/jquery.print.js}"></script>
 <script type="text/javascript">
+
+    function setForm(ele) {
+        var form = document.getElementById('form');
+        var e = $(ele);
+        form.color.value = e.css('color');
+        form.family = e.css('font-family');
+        form.size = e.css('font-size');
+    }
+
+    function sort() {
+        var a = [];
+        for (i = 0; i < arguments.length; i++)
+            a = a.concat(arguments[i]);
+
+        a.sort(function (a, b) {
+            return a - b;
+        });
+        return a;
+    }
+
+    function between(x1, x2, v) {
+        var x = sort(x1, x2);
+        x1 = x[0];
+        x2 = x[1];
+        return v >= x1 && v <= x2;
+    }
+
+    function getOnlySelectedElement() {
+        var selectedList = $('.selected');
+        if (selectedList && selectedList.length == 1)
+            return selectedList.eq(0);
+        return null;
+    }
+
     (function () {
-        function setForm(ele) {
-            var form = document.getElementById('form');
-            var e = $(ele);
-            form.color.value = e.css('color');
-            form.family = e.css('font-family');
-            form.size = e.css('font-size');
-        }
+        $('#foo').prepend('<a class="print-preview">Print this page</a>');
+        $('a.print-preview').on('click', function() {
+            $.print('<p>第 1 页</p>\n' +
+                '<div style="page-break-after:always;"></div>\n' +
+                '<p>第 2 页</p>\n' +
+                '<div style="page-break-after:always;"></div>\n' +
+                '<p>第 3 页</p>');
+        });
 
-        function sort() {
-            var a = [];
-            for (i = 0; i < arguments.length; i++)
-                a = a.concat(arguments[i]);
-
-            a.sort(function (a, b) {
-                return a - b;
-            });
-            return a;
-        }
-
-        function between(x1, x2, v) {
-            var x = sort(x1, x2);
-            x1 = x[0];
-            x2 = x[1];
-            return v >= x1 && v <= x2;
-        }
 
         function cross(x1, x2, y1, y2) {
             if (Math.abs(x1 - x2) > Math.abs(y1 - y2))
@@ -137,7 +160,11 @@
             return between(y1, y2, x1) || between(y1, y2, x2);
         }
 
-        function select() {
+        function select(e) {
+
+            if ($(e.target).is('.unit'))
+                return;
+
             var moves = [];
             var parentContainer = $('#container');
             var boxList = [];
@@ -218,25 +245,25 @@
                     var selectedBoxList = $(boxList).filter(".selected");
 
                     if (selectedBoxList.length > 0) {
-                        $(document).off('mousedown mouseup mousemove');
+                        // $(document).off('mousedown mouseup mousemove');
                     }
-                    $(selectedBoxList).each(function (index) {
-                        var drag = $(this).myDrag({
-                            randomPosition: true,
-                            direction: 'all',
-                            handler: false,
-                            randomPosition: false
-                        });
-
-                        moves.push(drag);
-                    });
+                    //$(selectedBoxList).each(function (index) {
+                    // var drag = $(this).myDrag({
+                    //     randomPosition: true,
+                    //     direction: 'all',
+                    //     handler: false,
+                    //     randomPosition: false
+                    // });
+                    //
+                    // moves.push(drag);
+                    //});
                 }
                 boxList = null, _x = null, _y = null, rectangleDiv = null, startX = null, startY = null, evt = null;
             }
 
             function clearSelect(ev) {
 
-                if ($(ev.target).is('.unit,button,a'))
+                if ($(ev.target).is('.unit,button,a,select,input'))
                     return;
 
                 $('.selected').removeClass().addClass('unit')
@@ -244,8 +271,9 @@
                 $.each(moves, function (i, e) {
                     e.stop();
                 })
-                $(document).off('click', clearSelect);
-                $(document).mousedown(select);
+                // $(document).off('click', clearSelect);
+                $('#container').mousedown(select);
+
             }
 
             $(document).on('mousemove', calSelect);
@@ -255,19 +283,21 @@
                 stopSelect(e);
             })
 
-
-            $(document).on('click', clearSelect);
+            // $(document).on('click', clearSelect);
 
         }
 
-        function getOnlySelectedElement() {
-            var selectedList = $('.selected');
-            if (selectedList && selectedList.length == 1)
-                return selectedList.eq(0);
-            return null;
-        }
+        $('#container > *').each(function (index, ele) {
+            var drag = $(this).myDrag({
+                randomPosition: true,
+                direction: 'all',
+                handler: false,
+                randomPosition: false
+            });
+        })
 
-        $(document).mousedown(select);
+
+        $('#container').mousedown(select);
 
         $('button[name=align]').click(function (e) {
             align = e.target.dataset.align;
@@ -298,27 +328,25 @@
             }
         });
 
+        $('button[name=newImage]').click(function (e) {
+
+            var box = document.createElement('div');
+            box.className = 'unit';
+
+            var img = document.createElement('img');
+            img.src = '';
+
+
+            $('#container').append(box.outerHTML);
+
+        });
+
         $('button[name=newText]').click(function (e) {
 
             var box = document.createElement('div');
             box.className = 'unit';
             box.innerText = '新节点';
             $('#container').append(box.outerHTML);
-
-        });
-
-
-        $('button[name=size]').click(function (e) {
-            var selected = getOnlySelectedElement();
-            if (selected) {
-                var oldSize = selected.css('font-size').replace('px', '');
-                if (e.target.dataset.op == 'large') {
-                    oldSize++;
-                } else if (e.target.dataset.op == 'small') {
-                    oldSize--;
-                }
-                selected.css('font-size', oldSize + 'px');
-            }
 
         });
 
@@ -330,17 +358,39 @@
         });
 
 
-        $('select[name=family]').change(function (e) {
-            var selected = getOnlySelectedElement();
-            if (selected) {
-                selected.css('font-family', e.target.value);
-            }
-        });
-
     })();
+
+
+    function ajdustSize(op) {
+        var selected = getOnlySelectedElement();
+        if (selected) {
+            var oldSize = selected.css('font-size').replace('px', '');
+            if (op == 'large') {
+                oldSize++;
+            } else if (op == 'small') {
+                oldSize--;
+            }
+            selected.css('font-size', oldSize + 'px');
+        }
+
+    }
 
     layui.use(['form', 'layedit', 'laydate'], function () {
         var form = layui.form, layer = layui.layer;
+        form.on('select(family)', function (data) {
+            var selected = getOnlySelectedElement();
+            if (selected) {
+                selected.css('font-family', data.value);
+            }
+        });
+        layui.$('.layui-form .layui-btn').on('click', function (e) {
+            var type = $(this).data('type');
+            if (type == 'large' || type == 'small') {
+                ajdustSize(type);
+            }
+
+            e.preventDefault();
+        });
     });
 
     function clearEventBubble(evt) {

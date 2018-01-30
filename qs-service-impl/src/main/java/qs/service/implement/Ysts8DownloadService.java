@@ -1,4 +1,4 @@
-package qs.service;
+package qs.service.implement;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
 public class Ysts8DownloadService {
     Logger logger = LoggerFactory.getLogger(Ysts8DownloadService.class);
     String domain = "http://www.ysts8.com";
@@ -66,3 +67,4 @@ public class Ysts8DownloadService {
 
     }
 }
+*/

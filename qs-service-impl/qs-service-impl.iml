@@ -6,9 +6,7 @@
     </facet>
     <facet type="web" name="Web">
       <configuration>
-        <webroots>
-          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
-        </webroots>
+        <webroots />
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src/main/java" />
           <root url="file://$MODULE_DIR$/src/main/resources" />
@@ -27,13 +25,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="qs-model" />
     <orderEntry type="module" module-name="qs-config" />
     <orderEntry type="module" module-name="qs-web-base" />
     <orderEntry type="module" module-name="qs-util" />
-    <orderEntry type="module" module-name="qs-service" />
+    <orderEntry type="module" module-name="qs-model" />
     <orderEntry type="module" module-name="qs-persist" />
-    <orderEntry type="module" module-name="qs-service-impl" />
+    <orderEntry type="module" module-name="qs-service" />
     <orderEntry type="library" name="Maven: de.invesdwin:invesdwin-instrument:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.5" level="project" />
     <orderEntry type="library" name="Maven: org.assertj:assertj-core:2.6.0" level="project" />

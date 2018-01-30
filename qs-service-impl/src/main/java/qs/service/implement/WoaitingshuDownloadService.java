@@ -1,4 +1,4 @@
-package qs.service;
+package qs.service.implement;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

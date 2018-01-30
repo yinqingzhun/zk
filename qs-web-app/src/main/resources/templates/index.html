@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8"></meta>
     <title>index</title>
-    <script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
 </head>
 <body>
 <h1>welcome to spring world</h1>
-<div th:text="${message?:''}"></div>
+<div th:text="${message?:''}" id="msg"></div>
 <div th:unless="${#httpServletRequest.remoteUser eq null}">
     welcome,<span th:text="${#httpServletRequest.remoteUser}"></span>
     <form th:action="@{/logout}" method="post"
@@ -15,13 +14,22 @@
         <a href="#" onclick="this.parentNode.submit()">logout</a>
     </form>
 </div>
+<div id="container" style="display:inline-block;width:800px;height:600px;position:relative;border:1px solid #333333;">
+    <div class="unit"
+         style="display:inline-block;width:100px;height:100px;position:absolute;left:50px;top:50px;border:1px solid #93D1FF;">
 
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        $('#container').on('click', function (e) {
 
+            var content=$(e.target).is('.unit')?'unit clicked':'container clicked';
+
+            $('#msg').append('<div>' +  content+ '</div>');
+        })
     });
-
-
 </script>
 </body>
 </html>

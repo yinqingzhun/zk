@@ -1,8 +1,9 @@
-package qs.service;
+package qs.service.implement;
 
 import org.springframework.stereotype.Service;
 import qs.config.db.DbChoosing;
 import qs.config.db.EnumDataSourceName;
+import qs.service.HelloService;
 
 @DbChoosing(EnumDataSourceName.TICKET_BASE)
 @Service

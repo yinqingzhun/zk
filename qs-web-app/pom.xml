@@ -28,6 +28,10 @@
             <groupId>qs</groupId>
             <artifactId>qs-service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>qs</groupId>
+            <artifactId>qs-service-impl</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
