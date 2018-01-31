@@ -16,6 +16,13 @@
             color: #333;
             border: 1px solid #ccc;
             font-family: '宋体';
+
+        }
+
+        .box {
+            width: 60px;
+            height: 60px;
+            border: 1px red dashed;
         }
 
         .selected {
@@ -40,6 +47,20 @@
             width: auto;
             display: none;
         }
+
+        .select-box {
+            position: absolute;
+            width: 0px;
+            height: 0px;
+            font-size: 0px;
+            margin: 0px;
+            padding: 0px;
+            border: 1px dashed #0099FF;
+            background-color: #C3D5ED;
+            z-index: 1000;
+            filter: alpha(opacity:60);
+            opacity: 0.6;
+        }
     </style>
 </head>
 <body oncontextmenu="event.returnValue = false;">
@@ -51,6 +72,7 @@
     <button data-align="middle" name="align">middle</button>
     <button name="newText">newText</button>
     <button name="newImage">newImage</button>
+    <button name="newBox">newBox</button>
 </div>
 <div id="foo">
     <form id="font" class="layui-form" action="#">
@@ -101,6 +123,7 @@
     <div class="unit" style="left:220px;top:110px;">file6</div>
 
 </div>
+<div id="qrcode"></div>
 <script th:src="@{/layui/layui.js}"></script>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
 <script src="https://cdn.bootcss.com/jquery-tools/1.2.7/jquery.tools.min.js"></script>
@@ -108,6 +131,7 @@
 <script th:src="@{/js/drag.js}"></script>
 <script th:src="@{/js/vendor/html5-3.6-respond-1.1.0.min.js}"></script>
 <script th:src="@{/js/jquery.print.js}"></script>
+<script th:src="@{/js/jquery.qrcode.min.js}"></script>
 <script type="text/javascript">
 
     function setForm(ele) {
@@ -136,6 +160,16 @@
         return v >= x1 && v <= x2;
     }
 
+    function dragable(ele) {
+        var drag = $(ele).myDrag({
+            randomPosition: true,
+            direction: 'all',
+            handler: false,
+            randomPosition: false
+        });
+        return drag;
+    }
+
     function getOnlySelectedElement() {
         var selectedList = $('.selected');
         if (selectedList && selectedList.length == 1)
@@ -143,14 +177,34 @@
         return null;
     }
 
+    function generateQrCode(ele, text, width, height) {
+        jQuery(ele).qrcode({
+            render: "table", //也可以替换为table,canvas
+            width: width,
+            height: height,
+            // foreground: "#C00",
+            // background: "#333",
+            text: text
+        });
+    }
+
     (function () {
+
+
         $('#foo').prepend('<a class="print-preview">Print this page</a>');
-        $('a.print-preview').on('click', function() {
-            $.print('<p>第 1 页</p>\n' +
-                '<div style="page-break-after:always;"></div>\n' +
-                '<p>第 2 页</p>\n' +
-                '<div style="page-break-after:always;"></div>\n' +
-                '<p>第 3 页</p>');
+        $('a.print-preview').on('click', function () {
+
+            var html = $('#container').get(0).outerHTML,
+                out = '',
+                len = 3;
+            for (var i = 0; i < len; i++) {
+                out += html;
+                if (i < len - 1) {
+                    out += '<div style="page-break-after:always;"></div>';
+                }
+            }
+
+            $.print(out);
         });
 
 
@@ -165,13 +219,12 @@
             if ($(e.target).is('.unit'))
                 return;
 
-            var moves = [];
             var parentContainer = $('#container');
-            var boxList = [];
-            var fileNodes = $('#container>*');
+            var fileNodes = $('#container>*'),
+                boxList = [];
             for (var i = 0; i < fileNodes.length; i++) {
                 if (fileNodes[i].className.indexOf("unit") != -1) {
-                    fileNodes[i].className = "unit";
+                    fileNodes[i].className = fileNodes[i].className.replace('selected', '');
                     boxList.push(fileNodes[i]);
                 }
             }
@@ -180,7 +233,7 @@
             var startX = (evt.x || evt.clientX);
             var startY = (evt.y || evt.clientY);
             var rectangleDiv = document.createElement("div");
-            rectangleDiv.style.cssText = "position: absolute;width: 0px;height: 0px;font-size: 0px;margin: 0px;padding: 0px;border: 1px dashed #0099FF;background-color: #C3D5ED;z-index: 1000;filter: alpha(opacity:60);opacity: 0.6;display: none;";
+            rectangleDiv.className = "select-box";
             rectangleDiv.id = "selectDiv";
             document.body.appendChild(rectangleDiv);
             rectangleDiv.style.left = startX + "px";
@@ -230,7 +283,7 @@
                                 }
                             } else {
                                 if (boxList[i].className.indexOf("selected") != -1) {
-                                    boxList[i].className = "unit";
+                                    boxList[i].className = boxList[i].className.replace('selected', '');
                                 }
                             }
                         }
@@ -242,38 +295,8 @@
                 isSelect = false;
                 if (rectangleDiv) {
                     document.body.removeChild(rectangleDiv);
-                    var selectedBoxList = $(boxList).filter(".selected");
-
-                    if (selectedBoxList.length > 0) {
-                        // $(document).off('mousedown mouseup mousemove');
-                    }
-                    //$(selectedBoxList).each(function (index) {
-                    // var drag = $(this).myDrag({
-                    //     randomPosition: true,
-                    //     direction: 'all',
-                    //     handler: false,
-                    //     randomPosition: false
-                    // });
-                    //
-                    // moves.push(drag);
-                    //});
                 }
                 boxList = null, _x = null, _y = null, rectangleDiv = null, startX = null, startY = null, evt = null;
-            }
-
-            function clearSelect(ev) {
-
-                if ($(ev.target).is('.unit,button,a,select,input'))
-                    return;
-
-                $('.selected').removeClass().addClass('unit')
-
-                $.each(moves, function (i, e) {
-                    e.stop();
-                })
-                // $(document).off('click', clearSelect);
-                $('#container').mousedown(select);
-
             }
 
             $(document).on('mousemove', calSelect);
@@ -283,19 +306,13 @@
                 stopSelect(e);
             })
 
-            // $(document).on('click', clearSelect);
 
         }
 
-        $('#container > *').each(function (index, ele) {
-            var drag = $(this).myDrag({
-                randomPosition: true,
-                direction: 'all',
-                handler: false,
-                randomPosition: false
-            });
-        })
 
+        $('#container > *').each(function (index, ele) {
+            dragable(ele);
+        })
 
         $('#container').mousedown(select);
 
@@ -347,7 +364,17 @@
             box.className = 'unit';
             box.innerText = '新节点';
             $('#container').append(box.outerHTML);
+            dragable($('#container>*:last'));
 
+        });
+
+        $('button[name=newBox]').click(function (e) {
+
+            var box = document.createElement('div');
+            box.className = 'unit box';
+            generateQrCode(box,'test',100,100);
+            $('#container').append(box.outerHTML);
+            dragable($('#container>*:last'));
         });
 
         $('input[name=color]').change(function (e) {

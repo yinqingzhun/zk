@@ -32,9 +32,11 @@
             moveX,
             moveY;
         // 阻止冒泡
-        element.find('*').not('img').mousedown(function (e) {
-            e.stopPropagation();
-        });
+        // element.find('*')
+        //     // .not('img')
+        //     .mousedown(function (e) {
+        //     e.stopPropagation();
+        // });
         //初始化判断
         if (parent == 'parent') {
             parent = element.parent();
