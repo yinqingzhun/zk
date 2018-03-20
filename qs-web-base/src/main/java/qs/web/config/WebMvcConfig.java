@@ -1,4 +1,4 @@
-package qs.config;
+package qs.web.config;
 
 import org.springframework.boot.autoconfigure.web.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

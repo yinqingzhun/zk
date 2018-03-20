@@ -39,27 +39,7 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
 
     @RequestMapping({"", "/"})
     public String index(Model model) {
-        int i=0;
-        System.out.println(1/i);
-        //helloService.hello();
-
-        //Student student = new Student();
-        //student.setClassId(1);
-        //student.setName(UUID.randomUUID().toString());
-        //student.setEnabled(true);
-        //
-        //try {
-        //    studentService.save(student);
-        //} catch (Exception e) {
-        //    e.printStackTrace();
-        //}
-        studentService.generate();
-
-//        log.info("log info - {}", serviceList.stream().map(p -> p.getClass().getSimpleName()).reduce("", (a, b) -> a + "," + b));
-
-        //model.addAttribute("message", JsonHelper.serialize(studentService.getList(), true));
-
-
+        model.addAttribute("name","demo");
         return "demo";
     }
 

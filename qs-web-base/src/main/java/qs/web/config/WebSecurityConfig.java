@@ -1,4 +1,4 @@
-package qs.config;
+package qs.web.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
