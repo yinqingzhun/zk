@@ -9,10 +9,12 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import qs.model.ReturnValue;
 import qs.service.HelloService;
 import qs.service.StudentService;
@@ -33,9 +35,12 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
     @Autowired
     StudentService studentService;
 
+
+
     @RequestMapping({"", "/"})
     public String index(Model model) {
-
+        int i=0;
+        System.out.println(1/i);
         //helloService.hello();
 
         //Student student = new Student();
@@ -75,10 +80,15 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
         return ReturnValue.buildSuccessResult("json");
     }
 
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "not found")
     @RequestMapping("ex")
-    public String exception() throws Exception {
-        throw new Exception("ec");
+    public String exception(@RequestParam(value = "i", required = false, defaultValue = "-1") int i) throws Exception {
+        if (i == 0)
+            throw new Exception("ec");
+        return "index";
     }
+
+    //@ExceptionHandler(value = HttpStatus.BAD_REQUEST)
 
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
@@ -113,4 +123,5 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
     public void afterPropertiesSet() throws Exception {
         log.info("lifecycle:afterPropertiesSet");
     }
+
 }

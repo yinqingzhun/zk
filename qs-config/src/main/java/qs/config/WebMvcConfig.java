@@ -10,6 +10,7 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.handler.SimpleServletHandlerAdapter;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 
 /**
@@ -54,6 +55,11 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         BeanNameViewResolver beanNameViewResolver = new BeanNameViewResolver();
         beanNameViewResolver.setOrder(Ordered.LOWEST_PRECEDENCE);
         return beanNameViewResolver;
+    }
+
+    @Bean
+    SimpleServletHandlerAdapter simpleServletHandlerAdapter(){
+        return new SimpleServletHandlerAdapter();
     }
 
 

@@ -5,10 +5,7 @@ import org.springframework.stereotype.Repository;
 import qs.model.JwtUser;
 import qs.model.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -18,8 +15,9 @@ public class UserRepository {
     {
         User user = new User() {{
             setId(UUID.randomUUID().toString());
-            setUsername("user");
-            setPassword("password");
+            setUsername("u");
+            setPassword("$2a$10$Vv4QX/t9X8SR6qBt4cXsLeysgxkwWcsSVksU682QGovjt9Skv.7cG");
+            setRoles(Arrays.asList("ROLE_USER"));
         }};
         users.add(user);
     }

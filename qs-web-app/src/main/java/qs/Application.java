@@ -1,21 +1,22 @@
 package qs;
 
 import de.invesdwin.instrument.DynamicInstrumentationLoader;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
-import org.springframework.core.env.Environment;
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
+import qs.web.controller.WelcomeController;
 
-import java.util.Optional;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
  * Created by yinqingzhun on 2017/08/29.
  */
-@SpringBootApplication(exclude = {ErrorMvcAutoConfiguration.class})
+@SpringBootApplication(exclude = { })
 @EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
 public class Application extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
@@ -31,5 +32,18 @@ public class Application extends SpringBootServletInitializer {
         builder.sources(Application.class).run();
     }
 
+    @Bean
+    SimpleUrlHandlerMapping simpleUrlHandlerMapping() {
+        Map<String, Object> urlMap = new LinkedHashMap<String, Object>();
+        urlMap.put("welcome3","welcomeController");
+        urlMap.put("welcome4","welcomeController");
 
+        SimpleUrlHandlerMapping handlerMapping=new SimpleUrlHandlerMapping();
+        handlerMapping.setUrlMap(urlMap);
+        return handlerMapping;
+    }
+
+    @Bean WelcomeController welcomeController(){
+        return new WelcomeController();
+    }
 }

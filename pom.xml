@@ -38,11 +38,6 @@
             </dependency>
             <dependency>
                 <groupId>qs</groupId>
-                <artifactId>qs-model</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>qs</groupId>
                 <artifactId>qs-persist</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>

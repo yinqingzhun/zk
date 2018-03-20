@@ -1,8 +1,11 @@
 package qs.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -14,8 +17,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import qs.web.jwt.JwtAuthenticationTokenFilter;
 
+import javax.servlet.FilterRegistration;
 import java.util.concurrent.Executors;
 
 /**
@@ -26,11 +31,22 @@ import java.util.concurrent.Executors;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsService userDetailsService;
+    @Autowired
+    JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
-    @Bean
-    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
-        return new JwtAuthenticationTokenFilter();
-    }
+    //@Bean
+    //public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter()   {
+    //    return new JwtAuthenticationTokenFilter();
+    //}
+    //
+    //@Bean
+    //public FilterRegistrationBean jwtFilterRegistration(){
+    //    FilterRegistrationBean filterRegistration=new FilterRegistrationBean();
+    //    filterRegistration.setFilter(jwtAuthenticationTokenFilter());
+    //    filterRegistration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    //    filterRegistration.setName("jwtFilter");
+    //    return filterRegistration;
+    //}
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -51,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/logon")
                 // set permitAll for all URLs associated with Form Login
                 .permitAll();
+        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -64,7 +81,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 设置UserDetailsService
                 .userDetailsService(this.userDetailsService)
                 // 使用BCrypt进行密码的hash
-                .passwordEncoder(passwordEncoder());
+                //.passwordEncoder(passwordEncoder())
+        ;
 
         // enable in memory based authentication with a user named "user" and "admin"
         //.inMemoryAuthentication().withUser("user").password("password").roles("USER")
