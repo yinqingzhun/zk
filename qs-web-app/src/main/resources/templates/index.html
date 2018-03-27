@@ -14,6 +14,7 @@
         <a href="#" onclick="this.parentNode.submit()">logout</a>
     </form>
 </div>
+<div id="qr"></div>
 <div id="container" style="display:inline-block;width:800px;height:600px;position:relative;border:1px solid #333333;">
     <div class="unit"
          style="display:inline-block;width:100px;height:100px;position:absolute;left:50px;top:50px;border:1px solid #93D1FF;">
@@ -21,8 +22,20 @@
     </div>
 </div>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<script th:src="@{/js/jquery.qrcode.js}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+
+        $('#qr').qrcode({
+            render: "canvas", //也可以替换为table,canvas
+            width: 100,
+            height: 100,
+            // foreground: "#C00",
+            // background: "#333",
+            text: 'skdljfaksdjf',
+            toImg: true
+        });
+
         $('#container').on('click', function (e) {
 
             var content=$(e.target).is('.unit')?'unit clicked':'container clicked';
