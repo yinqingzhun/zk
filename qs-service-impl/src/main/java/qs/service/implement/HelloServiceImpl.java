@@ -5,7 +5,7 @@ import qs.config.db.DbChoosing;
 import qs.config.db.EnumDataSourceName;
 import qs.service.HelloService;
 
-@DbChoosing(EnumDataSourceName.TICKET_BASE)
+@DbChoosing(EnumDataSourceName.USER)
 @Service
 public class HelloServiceImpl implements HelloService {
     //@DbChoosing(EnumDataSourceName.TICKET_USER)
@@ -15,12 +15,12 @@ public class HelloServiceImpl implements HelloService {
         System.out.println(word);
     }
 
-    //@DbChoosing(EnumDataSourceName.TICKET_ORDER)
+    //@DbChoosing(EnumDataSourceName.TOPIC)
     private String getWord() {
         return "hello,boddy!";
     }
 
-    //@DbChoosing(EnumDataSourceName.TICKET_ORDER)
+    //@DbChoosing(EnumDataSourceName.TOPIC)
     private void sayHi() {
 
     }

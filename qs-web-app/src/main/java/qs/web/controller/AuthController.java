@@ -16,7 +16,6 @@ import qs.web.jwt.JwtAuthenticationResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RestController
 public class AuthController {
     @Value("${jwt.header}")
     private String tokenHeader;

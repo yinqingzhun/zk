@@ -1,8 +1,7 @@
 package qs.util;
 
 import com.google.common.base.Preconditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -13,8 +12,8 @@ import java.nio.charset.Charset;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+@Slf4j
 public class ShellUtil {
-   static Logger logger = LoggerFactory.getLogger(ShellUtil.class);
     public static boolean shellkit(Consumer<String> consumer, String... cmd) {
 
         Preconditions.checkNotNull(consumer, "consumer is null~!");
@@ -38,7 +37,7 @@ public class ShellUtil {
             try (BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream(), Charset.forName("UTF-8")))) {
 
                 while ((s = stdInput.readLine()) != null) {
-                    logger.info(s);
+                    log.info(s);
                     consumer.accept(s);
                 }
 
@@ -49,7 +48,7 @@ public class ShellUtil {
             }
         } catch (Exception ex) {
             runningStatus = 1;
-            logger.error(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
 
 
@@ -71,7 +70,7 @@ public class ShellUtil {
             result = Optional.of(inv.invokeFunction(funcName, args));
 
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         return result;
