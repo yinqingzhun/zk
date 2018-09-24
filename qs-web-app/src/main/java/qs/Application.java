@@ -1,15 +1,11 @@
 package qs;
 
 import de.invesdwin.instrument.DynamicInstrumentationLoader;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
-import org.springframework.core.env.Environment;
-
-import java.util.Optional;
 
 
 /**
@@ -30,6 +26,12 @@ public class Application extends SpringBootServletInitializer {
         SpringApplicationBuilder builder = new SpringApplicationBuilder();
         builder.sources(Application.class).run();
     }
+
+
+
+
+
+
 
 
 }

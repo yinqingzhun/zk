@@ -1,6 +1,7 @@
 package qs.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.util.Files;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -16,10 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import qs.model.ReturnValue;
 import qs.service.HelloService;
 import qs.service.StudentService;
-import qs.util.JsonHelper;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.UUID;
 
 /**
  * Created by yinqingzhun on 2017/08/29.
@@ -35,20 +36,8 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
 
     @RequestMapping({"", "/"})
     public String index(Model model) {
-
-        //helloService.hello();
-
-        //Student student = new Student();
-        //student.setClassId(1);
-        //student.setName(UUID.randomUUID().toString());
-        //student.setEnabled(true);
-        //
-        //try {
-        //    studentService.save(student);
-        //} catch (Exception e) {
-        //    e.printStackTrace();
-        //}
-        studentService.generate();
+        Files.newFile("/reports/" + UUID.randomUUID().toString().replace("-", "") + ".txt");
+        log.info("file created");
 
 //        log.info("log info - {}", serviceList.stream().map(p -> p.getClass().getSimpleName()).reduce("", (a, b) -> a + "," + b));
 
@@ -72,7 +61,8 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
     @RequestMapping(value = "json", produces = "application/json")
     @ResponseBody
     public ReturnValue json() throws Exception {
-        return ReturnValue.buildSuccessResult("json");
+       Object o= helloService.hello();
+        return ReturnValue.buildSuccessResult(o);
     }
 
     @RequestMapping("ex")

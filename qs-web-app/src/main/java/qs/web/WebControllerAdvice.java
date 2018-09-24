@@ -6,11 +6,14 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import qs.exception.SupportInfoException;
+import qs.model.ReturnValue;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -23,12 +26,12 @@ import java.util.Date;
 public class WebControllerAdvice {
     Logger logger= LoggerFactory.getLogger(WebControllerAdvice.class);
 
-   /* @ExceptionHandler(exception.class)
+    @ExceptionHandler(Exception.class)
     @ResponseBody
     ResponseEntity<?> handleControllerException(HttpServletRequest request, Throwable ex) {
         HttpStatus status = getStatus(request);
         return new ResponseEntity<>(ReturnValue.buildErrorResult(status.value(), ex.getMessage()), status);
-    }*/
+    }
 
 
 

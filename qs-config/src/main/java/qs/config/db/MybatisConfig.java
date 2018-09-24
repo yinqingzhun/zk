@@ -7,14 +7,12 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.*;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -23,6 +21,7 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 import javax.sql.DataSource;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 @DependsOn(value = "dbConfig")
 @Configuration
 @EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
@@ -31,8 +30,8 @@ import java.util.stream.Collectors;
 public class MybatisConfig implements TransactionManagementConfigurer, ApplicationContextAware {
 
     ApplicationContext applicationContext;
-@Autowired
-DbConfig dbConfig;
+    @Autowired
+    DbConfig dbConfig;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -86,5 +85,10 @@ DbConfig dbConfig;
         }
     }
 
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        return jdbcTemplate;
+    }
 
 }
