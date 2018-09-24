@@ -58,6 +58,13 @@ public class WebControllerAdvice {
         // Nothing to do
     }
 
+    // 500
+    @ExceptionHandler(ArithmeticException.class)
+    public String arithmetic() {
+        logger.error("divide by zero");return "welcome";
+        // Nothing to do
+    }
+
     /**
      * Convert a predefined exception to an HTTP Status code and specify the
      * name of a specific view that will be used to display the error.

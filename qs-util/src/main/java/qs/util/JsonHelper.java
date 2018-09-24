@@ -4,13 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-
+@Slf4j
 public class JsonHelper {
-    private static Logger logger = LoggerFactory.getLogger(JsonHelper.class);
+   
     private static ObjectMapper mapper = new ObjectMapper();
 
     static {
@@ -22,7 +21,7 @@ public class JsonHelper {
         try {
             return mapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -33,7 +32,7 @@ public class JsonHelper {
                 mapper.writerWithDefaultPrettyPrinter().writeValueAsString(o);
             return mapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }

@@ -1,5 +1,6 @@
 package qs.config.db;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -17,6 +18,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
+import sun.rmi.runtime.Log;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 @EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
 @MapperScan("qs.persist")
 @Import(DbConfig.class)
+@Slf4j
 public class MybatisConfig implements TransactionManagementConfigurer, ApplicationContextAware {
 
     ApplicationContext applicationContext;
@@ -47,12 +50,13 @@ public class MybatisConfig implements TransactionManagementConfigurer, Applicati
         factory.setTypeAliasesPackage("qs.model.po");
 
 
+
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         try {
             factory.setMapperLocations(resolver.getResources("classpath*:mapper/*.xml"));
             return factory.getObject();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
             throw new RuntimeException(e);
         }
     }

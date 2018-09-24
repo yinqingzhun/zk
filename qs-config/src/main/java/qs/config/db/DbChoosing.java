@@ -13,4 +13,5 @@ public @interface DbChoosing {
      * @return
      */
     EnumDataSourceName value();
+    EnumDataSourceType type() default EnumDataSourceType.read;
 }

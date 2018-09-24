@@ -14,6 +14,7 @@ import qs.service.HelloService;
 import java.util.List;
 @Slf4j
 @DbChoosing(EnumDataSourceName.TICKET_BASE)
+
 @Service
 public class HelloServiceImpl implements HelloService {
     //@DbChoosing(EnumDataSourceName.TICKET_USER)
@@ -27,12 +28,12 @@ public class HelloServiceImpl implements HelloService {
       return list;
     }
 
-    //@DbChoosing(EnumDataSourceName.TICKET_ORDER)
+    //@DbChoosing(EnumDataSourceName.TOPIC)
     private String getWord() {
         return "hello,boddy!";
     }
 
-    //@DbChoosing(EnumDataSourceName.TICKET_ORDER)
+    //@DbChoosing(EnumDataSourceName.TOPIC)
     private void sayHi() {
 
     }

@@ -9,6 +9,8 @@
                 randomPosition: true,
                 direction: 'all',
                 handler: false,
+                allMove:false,
+                allMoveSelector:'',
                 dragStart: function (x, y) {
                 },
                 dragEnd: function (x, y) {

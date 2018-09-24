@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import qs.config.db.DbChoosing;
 import qs.config.db.EnumDataSourceName;
+import qs.config.db.EnumDataSourceType;
 import qs.model.Student;
 import qs.repository.StudentRepository;
 import qs.service.StudentService;
@@ -31,14 +32,14 @@ public class StudentServiceImpl implements StudentService {
         return value;
     }
 
-    @DbChoosing(EnumDataSourceName.TICKET_BASE)
+    @DbChoosing(EnumDataSourceName.USER)
     //@Transactional
     Student failedToSave(Student student) {
         Student value = studentRepository.save(student);
         int i = 1 / 0;
         return value;
     }
-    @DbChoosing(EnumDataSourceName.TICKET_BASE)
+    @DbChoosing(EnumDataSourceName.USER)
     @Transactional
     public void generate() {
         Student student = new Student();
@@ -51,4 +52,22 @@ public class StudentServiceImpl implements StudentService {
             logger.info(e.getMessage());
         }
     }
+
+
+    @DbChoosing(value = EnumDataSourceName.TOPIC,type = EnumDataSourceType.read)
+    public void 发帖(){
+        读取发帖人详情();//read DB:USER
+        保存帖子();//write DB:TOPIC
+    }
+
+    @DbChoosing(value = EnumDataSourceName.USER,type=EnumDataSourceType.read)
+    private void 读取发帖人详情(){
+    }
+
+    @DbChoosing(value = EnumDataSourceName.TOPIC,type = EnumDataSourceType.write)
+    private void 保存帖子(){
+    }
+
+
+
 }
