@@ -58,8 +58,7 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
         log.error("Request raised: " + exception.getClass().getSimpleName());
         return "error";
     }
-        Files.newFile("/reports/" + UUID.randomUUID().toString().replace("-", "") + ".txt");
-        log.info("file created");
+      
 
     @ResponseBody
     @RequestMapping("/xml")

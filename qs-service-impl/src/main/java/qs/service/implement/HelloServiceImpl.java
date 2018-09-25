@@ -13,7 +13,7 @@ import qs.service.HelloService;
 
 import java.util.List;
 @Slf4j
-@DbChoosing(EnumDataSourceName.TICKET_BASE)
+@DbChoosing(EnumDataSourceName.TOPIC)
 
 @Service
 public class HelloServiceImpl implements HelloService {
