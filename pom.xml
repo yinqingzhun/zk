@@ -18,11 +18,13 @@
         <module>qs-service-impl</module>
         <module>qs-netty-server</module>
         <module>qs-netty-client</module>
+        <module>qs-amqp</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
         <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
         <java.version>1.8</java.version>
+        <brave.version>5.3.3</brave.version>
     </properties>
 
     <parent>
@@ -33,6 +35,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.zipkin.brave</groupId>
+                <artifactId>brave-bom</artifactId>
+                <version>${brave.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+           
             <dependency>
                 <groupId>qs</groupId>
                 <artifactId>qs-model</artifactId>
@@ -168,26 +178,33 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-logging</artifactId>
                 <version>${spring-boot.version}</version>
-                <exclusions>
+                <!--<exclusions>
                     <exclusion>
                         <artifactId>ch.qos.logback</artifactId>
                         <groupId>logback-classic</groupId>
                     </exclusion>
-                </exclusions>
+                </exclusions>-->
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
                 <version>4.0.36.Final</version>
             </dependency>
-            
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>4.6</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-            <version>${spring-boot.version}</version>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
         </dependency>
     </dependencies>
 

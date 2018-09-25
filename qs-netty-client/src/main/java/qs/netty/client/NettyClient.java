@@ -59,10 +59,10 @@ public class NettyClient {
         }
     }
 
-    public void send(Object msg) {
+    public void send(byte[] bytes) {
         // 传数据给服务端
-        ch.writeAndFlush(msg);
-        log.info("netty client is sending message: {}", msg);
+        ch.write(bytes);
+        log.info("netty client is sending message: {}", bytes.length);
     }
 
     @PreDestroy
