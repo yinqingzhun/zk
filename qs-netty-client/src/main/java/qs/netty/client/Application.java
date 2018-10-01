@@ -2,7 +2,6 @@ package qs.netty.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -39,6 +38,5 @@ public class Application {
     public void sendMsg() {
         nettyClient.send(DateHelper.getNowString().getBytes(Charset.forName("utf-8")));
     }
-
 
 }

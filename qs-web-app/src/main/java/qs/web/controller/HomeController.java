@@ -50,6 +50,12 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
     Configuration cfg;
     @Autowired
     FreeMarkerViewResolver freeMarkerViewResolver;
+    @ResponseBody
+    @RequestMapping("/api/v2/spans")
+    public String api(HttpServletRequest request){
+      
+        return "";
+    }
 
     @ExceptionHandler({SQLException.class})
     public String dr(Exception exception) {

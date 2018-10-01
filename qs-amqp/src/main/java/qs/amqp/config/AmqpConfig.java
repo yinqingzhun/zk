@@ -23,12 +23,12 @@ public class AmqpConfig {
         // other customizations as required
         return rabbitTemplate;
     }
-
+/*
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
             ConnectionFactory connectionFactory,
             SpringRabbitTracing springRabbitTracing
     ) {
         return springRabbitTracing.newSimpleRabbitListenerContainerFactory(connectionFactory);
-    }
+    }*/
 }
