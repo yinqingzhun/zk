@@ -72,8 +72,8 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
         //String name = uploadFile(request);
         //FreeMarkerView view = (FreeMarkerView) freeMarkerViewResolver.resolveViewName("demo", Locale.SIMPLIFIED_CHINESE);
         //createStaticPage(cfg, view.getUrl(), "demo", Collections.emptyMap());
-        throw new SQLException("db");
-        //return "demo";
+        //throw new SQLException("db");
+        return "index";
     }
 
     public static void createStaticPage(Configuration cfg

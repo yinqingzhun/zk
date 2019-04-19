@@ -14,6 +14,7 @@ public class AppRunner implements ApplicationRunner {
     Logger logger = LoggerFactory.getLogger(AppRunner.class);
     @Autowired
     SampleProperties sampleProperties;
+@Autowired
 
     /**
      * Callback used to run the bean.

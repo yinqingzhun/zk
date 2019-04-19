@@ -18,6 +18,8 @@
         <module>qs-service-impl</module>
         <module>qs-netty-server</module>
         <module>qs-netty-client</module>
+        <module>qs-amqp</module>
+
     </modules>
     <packaging>pom</packaging>
     <properties>
