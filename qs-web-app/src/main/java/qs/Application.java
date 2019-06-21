@@ -2,6 +2,7 @@ package qs;
 
 import de.invesdwin.instrument.DynamicInstrumentationLoader;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,7 @@ import java.util.Map;
 /**
  * Created by yinqingzhun on 2017/08/29.
  */
-@SpringBootApplication(exclude = { })
+@SpringBootApplication(exclude = {HibernateJpaAutoConfiguration.class })
 @EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
 public class Application extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

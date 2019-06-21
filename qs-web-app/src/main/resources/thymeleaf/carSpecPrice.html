@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>Title</title>
+    <style type="text/css">
+        table, div {
+            margin: 5px;
+        }
+
+        td {
+            color: #666D7F;
+            font-size:12px;
+        }
+    </style>
+</head>
+<body>
+<div th:text="${m.SpecName}" style="font-family: PingFangSC-Medium;font-size:16px;padding-bottom:1px;color:#111E36">2020款 豹猫S-500 运动型</div>
+<hr style="background-color:rgb(244,244,244);height: 1px;width:100%;border: none;"/>
+<table style="table-layout: fixed;width:100%;">
+    <tr>
+        <td>裸车参考价</td>
+        <td th:if="${m.priceoffValue}<0" th:text="加价">加价</td>
+        <td th:if="${m.priceoffValue>=0}" th:text="优惠">优惠</td>
+        <td>厂商指导价</td>
+    </tr>
+    <tr>
+        <td th:text="${m.dealPrice}" style="color:#FF6600;font-size:18px;">20.9万</td>
+        <td th:if="${m.priceoffValue>0}" th:text="|${m.priceoff}|" style="color:#00CC88;font-size:14px;font-family: DINAlternate-Bold;">↓9.0万</td>
+        <td th:if="${m.priceoffValue<0}" th:text="|${m.priceoff}|" style="color:#FF6600;font-size:14px;font-family: DINAlternate-Bold;">9.0万</td>
+        <td th:if="${m.priceoffValue==0}" th:text="|${m.priceoff}|" style="font-family: PingFangSC-Regular;font-size:12px;">暂无</td>
+        <td th:text="${m.factoryPrice}" th:style="${m.priceoffValue==0?'':'text-decoration:line-through;'}">29.9万</td>
+    </tr>
+</table>
+<hr style="background-color:rgb(244,244,244);height: 1px;width:100%;border: none;"/>
+<table>
+    <tr>
+        <td style="color:#FF6600;width:35px;font-size:11px;">综合<br/>优惠</td>
+        <td style="color:rgb(141,141,151);vertical-align: top;font-size:11px;" th:text="${m.promotionCondition}">店内上保险，店内贷款，加装饰包</td>
+    </tr>
+</table>
+
+
+</body>
+</html>

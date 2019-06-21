@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="mybatis-generator/jdbc.properties"/>
+    <classPathEntry
+            location="../lib/mysql-connector-java-5.1.44.jar"/>
+    <context id="mysql" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressDate" value="false"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="${jdbc.mysql.driverClassName}"
+                        connectionURL="${jdbc.mysql.test.url}"
+                        userId="${jdbc.mysql.test.username}"
+                        password="${jdbc.mysql.test.password}"/>
+
+        <javaModelGenerator targetPackage="qs.model.po"
+                            targetProject="../qs-model/src/main/java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="../qs-persist/src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator targetPackage="qs.persist"
+                             targetProject="../qs-persist/src/main/java"
+                             type="XMLMAPPER">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <table tableName="student"  domainObjectName="Student"  enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
+
+        
+    </context>
+</generatorConfiguration>

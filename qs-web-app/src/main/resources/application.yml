@@ -12,12 +12,12 @@ jwt:
 app:
   datasource:
     mdb:
-      url: jdbc:mysql://localhost:3306/zk?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2b8&useSSL=false&allowMultiQueries=true
-      username: ${db.username}
-      password: ${db.password}
+      url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2b8&useSSL=false&allowMultiQueries=true&useLocalSessionState=true
+      username: ${db.mysql.test.username}
+      password: ${db.mysql.test.password}
       type: com.alibaba.druid.pool.DruidDataSource
       filters: stat
-      maxActive: 20
+      maxActive: 19
       initialSize: 1
       maxWait: 60000
       minIdle: 1
@@ -29,7 +29,24 @@ app:
       testOnReturn: false
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
-      driverClassName: com.mysql.jdbc.Driver
+    winds:
+      url: jdbc:sqlserver://localhost:1433;DatabaseName=winds
+      username: sa
+      password: sqlserver2014
+      type: com.alibaba.druid.pool.DruidDataSource
+      filters: stat
+      maxActive: 19
+      initialSize: 1
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
 #spring:
 #  datasource:
 #    url: jdbc:h2:mem:mydb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE

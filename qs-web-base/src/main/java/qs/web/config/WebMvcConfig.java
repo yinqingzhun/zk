@@ -66,6 +66,11 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         return beanNameViewResolver;
     }
 
+    @Override
+    protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        super.extendMessageConverters(converters);
+    }
+
     @Bean
     SimpleServletHandlerAdapter simpleServletHandlerAdapter() {
         return new SimpleServletHandlerAdapter();

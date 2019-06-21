@@ -1,7 +1,7 @@
 package qs.config.db;
 
 public enum EnumDataSourceName {
-    USER("mydb"), TOPIC("mydb2");
+    USER("mydb"), WINDS("winds");
     private String name;
 
     EnumDataSourceName(String name) {

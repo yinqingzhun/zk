@@ -14,6 +14,12 @@
         <a href="#" onclick="this.parentNode.submit()">logout</a>
     </form>
 </div>
+<div th:if="${off>0}" th:text="|↓${off}|">    
+</div>
+<div th:if="${off==0}" th:text="|暂无|">
+</div>
+<div th:if="${off<0}" th:text="|↑${off}|">
+</div>
 <div id="qr"></div>
 <div id="container" style="display:inline-block;width:800px;height:600px;position:relative;border:1px solid #333333;">
     <div class="unit"

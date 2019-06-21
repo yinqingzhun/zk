@@ -8,6 +8,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.*;
@@ -18,8 +19,8 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
-import sun.rmi.runtime.Log;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,7 +49,6 @@ public class MybatisConfig implements TransactionManagementConfigurer, Applicati
         factory.setDataSource(roundRobinDataSourceProxy(ctx));
         factory.setVfs(SpringBootVFS.class);
         factory.setTypeAliasesPackage("qs.model.po");
-
 
 
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -89,9 +89,13 @@ public class MybatisConfig implements TransactionManagementConfigurer, Applicati
         }
     }
 
+    @Qualifier("dataSource2")
+    @Autowired
+    DataSource mydb;
+
     @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    public JdbcTemplate jdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(mydb);
         return jdbcTemplate;
     }
 

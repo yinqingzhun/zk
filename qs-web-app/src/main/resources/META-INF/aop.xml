@@ -2,9 +2,19 @@
 <aspectj>
     <weaver  options="-verbose -showWeaveInfo">
         <include within="qs.service..*"/>
+        <include within="redis.clients.jedis.BinaryJedis"/>
+        <include within="okhttp3.*"/>
+        <include within="com.mysql.jdbc.*"/>
+        <include within="com.microsoft.sqlserver.jdbc.*"/>
+        
         <include within="qs.config.db.DataSourceAspect" />
+        <include within="qs.config.redis.BinaryRedisAspect"/>
+        <include within="qs.config.OkHttpAspect"/>
+        
     </weaver>
     <aspects>
         <aspect name="qs.config.db.DataSourceAspect"/>
+        <aspect name="qs.config.redis.BinaryRedisAspect"/> 
+        <aspect name="qs.config.OkHttpAspect"/>
     </aspects>
 </aspectj>

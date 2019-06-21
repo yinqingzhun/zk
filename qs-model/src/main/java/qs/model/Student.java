@@ -1,3 +1,4 @@
+/*
 package qs.model;
 
 
@@ -41,3 +42,4 @@ public class Student {
         this.enabled = enabled;
     }
 }
+*/
