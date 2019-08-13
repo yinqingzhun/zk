@@ -4,12 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionNameStrategy;
 import org.springframework.amqp.rabbit.connection.RabbitConnectionFactoryBean;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.time.Duration;
 
 @Slf4j
 @Configuration
@@ -24,8 +29,8 @@ public class RabbitConfig {
 
 
     @Bean
-    public ConnectionFactory cachingConnectionFactoryLocal(RabbitProperties rabbitMqProperties) throws Exception {
-        return createCachingConnectionFactory(rabbitMqProperties);
+    public ConnectionFactory cachingConnectionFactoryLocal(RabbitProperties rabbitMqProperties, ObjectProvider<ConnectionNameStrategy> connectionNameStrategy) throws Exception {
+        return createCachingConnectionFactory(rabbitMqProperties, connectionNameStrategy);
     }
 
 
@@ -66,67 +71,59 @@ public class RabbitConfig {
             log.info("消息发送成功。message:{}, replyCode:{}, replyText:{}, exchange:{}, routingKey:{}", message, replyCode, replyText, exchange, routingKey);
 
         });
-        
+
         return rabbitTemplate;
     }
 
-    private static CachingConnectionFactory createCachingConnectionFactory(RabbitProperties rabbitProperties) throws Exception {
+    private static RabbitConnectionFactoryBean getRabbitConnectionFactoryBean(RabbitProperties properties)
+            throws Exception {
+        PropertyMapper map = PropertyMapper.get();
         RabbitConnectionFactoryBean factory = new RabbitConnectionFactoryBean();
-        factory.setUseNio(true);
-        
-        if (rabbitProperties.determineHost() != null) {
-            factory.setHost(rabbitProperties.determineHost());
-        }
-        factory.setPort(rabbitProperties.determinePort());
-        if (rabbitProperties.determineUsername() != null) {
-            factory.setUsername(rabbitProperties.determineUsername());
-        }
-        if (rabbitProperties.determinePassword() != null) {
-            factory.setPassword(rabbitProperties.determinePassword());
-        }
-        if (rabbitProperties.determineVirtualHost() != null) {
-            factory.setVirtualHost(rabbitProperties.determineVirtualHost());
-        }
-        if (rabbitProperties.getRequestedHeartbeat() != null) {
-            factory.setRequestedHeartbeat(rabbitProperties.getRequestedHeartbeat());
-        }
-        RabbitProperties.Ssl ssl = rabbitProperties.getSsl();
+        map.from(properties::determineHost).whenNonNull().to(factory::setHost);
+        map.from(properties::determinePort).to(factory::setPort);
+        map.from(properties::determineUsername).whenNonNull().to(factory::setUsername);
+        map.from(properties::determinePassword).whenNonNull().to(factory::setPassword);
+        map.from(properties::determineVirtualHost).whenNonNull().to(factory::setVirtualHost);
+        map.from(properties::getRequestedHeartbeat).whenNonNull().asInt(Duration::getSeconds)
+                .to(factory::setRequestedHeartbeat);
+        RabbitProperties.Ssl ssl = properties.getSsl();
         if (ssl.isEnabled()) {
             factory.setUseSSL(true);
-            if (ssl.getAlgorithm() != null) {
-                factory.setSslAlgorithm(ssl.getAlgorithm());
-            }
-            factory.setKeyStore(ssl.getKeyStore());
-            factory.setKeyStorePassphrase(ssl.getKeyStorePassword());
-            factory.setTrustStore(ssl.getTrustStore());
-            factory.setTrustStorePassphrase(ssl.getTrustStorePassword());
+            map.from(ssl::getAlgorithm).whenNonNull().to(factory::setSslAlgorithm);
+            map.from(ssl::getKeyStoreType).to(factory::setKeyStoreType);
+            map.from(ssl::getKeyStore).to(factory::setKeyStore);
+            map.from(ssl::getKeyStorePassword).to(factory::setKeyStorePassphrase);
+            map.from(ssl::getTrustStoreType).to(factory::setTrustStoreType);
+            map.from(ssl::getTrustStore).to(factory::setTrustStore);
+            map.from(ssl::getTrustStorePassword).to(factory::setTrustStorePassphrase);
+            map.from(ssl::isValidateServerCertificate)
+                    .to((validate) -> factory.setSkipServerCertificateValidation(!validate));
+            map.from(ssl::getVerifyHostname).to(factory::setEnableHostnameVerification);
         }
-        if (rabbitProperties.getConnectionTimeout() != null) {
-            factory.setConnectionTimeout(rabbitProperties.getConnectionTimeout());
-        }
+        map.from(properties::getConnectionTimeout).whenNonNull().asInt(Duration::toMillis)
+                .to(factory::setConnectionTimeout);
         factory.afterPropertiesSet();
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(
-                factory.getObject());
-        connectionFactory.setAddresses(rabbitProperties.determineAddresses());
-        connectionFactory.setPublisherConfirms(rabbitProperties.isPublisherConfirms());
-        connectionFactory.setPublisherReturns(rabbitProperties.isPublisherReturns());
-        if (rabbitProperties.getCache().getChannel().getSize() != null) {
-            connectionFactory
-                    .setChannelCacheSize(rabbitProperties.getCache().getChannel().getSize());
-        }
-        if (rabbitProperties.getCache().getConnection().getMode() != null) {
-            connectionFactory
-                    .setCacheMode(rabbitProperties.getCache().getConnection().getMode());
-        }
-        if (rabbitProperties.getCache().getConnection().getSize() != null) {
-            connectionFactory.setConnectionCacheSize(
-                    rabbitProperties.getCache().getConnection().getSize());
-        }
-        if (rabbitProperties.getCache().getChannel().getCheckoutTimeout() != null) {
-            connectionFactory.setChannelCheckoutTimeout(
-                    rabbitProperties.getCache().getChannel().getCheckoutTimeout());
-        }
-        
-        return connectionFactory;
+        return factory;
     }
+
+
+    private static CachingConnectionFactory createCachingConnectionFactory(RabbitProperties properties
+            , ObjectProvider<ConnectionNameStrategy> connectionNameStrategy) throws Exception {
+        PropertyMapper map = PropertyMapper.get();
+        CachingConnectionFactory factory = new CachingConnectionFactory(
+                getRabbitConnectionFactoryBean(properties).getObject());
+        map.from(properties::determineAddresses).to(factory::setAddresses);
+        map.from(properties::isPublisherConfirms).to(factory::setPublisherConfirms);
+        map.from(properties::isPublisherReturns).to(factory::setPublisherReturns);
+        RabbitProperties.Cache.Channel channel = properties.getCache().getChannel();
+        map.from(channel::getSize).whenNonNull().to(factory::setChannelCacheSize);
+        map.from(channel::getCheckoutTimeout).whenNonNull().as(Duration::toMillis)
+                .to(factory::setChannelCheckoutTimeout);
+        RabbitProperties.Cache.Connection connection = properties.getCache().getConnection();
+        map.from(connection::getMode).whenNonNull().to(factory::setCacheMode);
+        map.from(connection::getSize).whenNonNull().to(factory::setConnectionCacheSize);
+        map.from(connectionNameStrategy::getIfUnique).whenNonNull().to(factory::setConnectionNameStrategy);
+        return factory;
+    }
+
 }

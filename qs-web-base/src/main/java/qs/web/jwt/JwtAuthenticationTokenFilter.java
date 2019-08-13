@@ -1,3 +1,4 @@
+/*
 package qs.web.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,3 +62,4 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 }
+*/

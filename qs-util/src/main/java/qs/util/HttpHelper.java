@@ -4,10 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -38,7 +37,8 @@ public class HttpHelper {
 
         if (fields != null && fields.size() > 0) {
             String query = String.join("&", fields.entrySet().stream().map(p -> p.getKey() + "=" + ConvertHelper.defaultValue(p.getValue(), "").toString()).collect(Collectors.toList()));
-            if (StringUtils.hasText(URI.create(url).getQuery()))
+           String q=URI.create(url).getQuery();
+            if (q!=null&&q.length()>0)
                 url += "&" + query;
             else
                 url += "?" + query;

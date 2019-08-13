@@ -2,7 +2,6 @@ package qs.util;
 
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -167,7 +166,7 @@ public class DateHelper {
         }
 
         //步骤二:处理毫秒SSS
-        if (StringUtils.hasText(subTime)) {
+        if (subTime != null && subTime.length() > 0) {
             if (datetime.indexOf(".") != -1) {
                 utcTimePattern = utcTimePattern + "HH:mm:ss.SSS";
             } else {

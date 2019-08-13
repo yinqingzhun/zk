@@ -1,3 +1,4 @@
+/*
 package qs.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -80,3 +81,4 @@ public class JwtUser implements UserDetails {
         return lastPasswordResetDate;
     }
 }
+*/

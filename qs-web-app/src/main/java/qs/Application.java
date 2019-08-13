@@ -1,12 +1,14 @@
 package qs;
 
 import de.invesdwin.instrument.DynamicInstrumentationLoader;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import qs.web.controller.WelcomeController;
 
@@ -17,9 +19,13 @@ import java.util.Map;
 /**
  * Created by yinqingzhun on 2017/08/29.
  */
+@EnableWebFlux
+@EnableScheduling
 @SpringBootApplication(exclude = {HibernateJpaAutoConfiguration.class })
 @EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
-public class Application extends SpringBootServletInitializer {
+public class Application
+//        extends SpringBootServletInitializer
+{
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         DynamicInstrumentationLoader.waitForInitialized(); //dynamically attach java agent to jvm if not already present
         DynamicInstrumentationLoader.initLoadTimeWeavingContext(); //weave all classes before they are loaded as beans
@@ -30,7 +36,7 @@ public class Application extends SpringBootServletInitializer {
         DynamicInstrumentationLoader.waitForInitialized(); //dynamically attach java agent to jvm if not already present
         DynamicInstrumentationLoader.initLoadTimeWeavingContext(); //weave all classes before they are loaded as beans
         SpringApplicationBuilder builder = new SpringApplicationBuilder();
-        builder.sources(Application.class).run();
+        builder.sources(Application.class).web(WebApplicationType.SERVLET).run();
     }
 
     @Bean
@@ -47,6 +53,8 @@ public class Application extends SpringBootServletInitializer {
     @Bean WelcomeController welcomeController(){
         return new WelcomeController();
     }
+
+
 
 
 

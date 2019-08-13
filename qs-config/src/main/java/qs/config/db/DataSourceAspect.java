@@ -3,8 +3,6 @@ package qs.config.db;
 import com.alibaba.druid.sql.dialect.sqlserver.ast.SQLServerStatement;
 import com.google.common.base.Stopwatch;
 import com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement;
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.StatementImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,12 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.util.TypeUtils;
 import qs.config.SlowLogCenter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -55,7 +51,7 @@ public class DataSourceAspect {
         return dbChoosing;
     }
 
-    @Around("execution(public * com.mysql.jdbc.PreparedStatement.execute*(..))" +
+   /* @Around("execution(public * com.mysql.jdbc.PreparedStatement.execute*(..))" +
             "||execution(public * com.mysql.jdbc.StatementImpl.execute*(..))")
     public Object statementMysqlExecute(ProceedingJoinPoint joinpoint) throws Throwable {
         Object target = joinpoint.getTarget();
@@ -82,7 +78,7 @@ public class DataSourceAspect {
         if (!sql.startsWith("/*"))
             SlowLogCenter.publishEvent(SlowLogCenter.LogType.MYSQL, sql, duration);
         return object;
-    }
+    }*/
 
     @Around("execution(public * com.microsoft.sqlserver.jdbc.SQLServerStatement.execute*(..))" +
             "||execution(public * com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.execute*(..))")
