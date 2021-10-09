@@ -12,9 +12,9 @@ jwt:
 app:
   datasource:
     mdb:
-      url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2b8&useSSL=false&allowMultiQueries=true&useLocalSessionState=true
-      username: ${db.mysql.test.username}
-      password: ${db.mysql.test.password}
+      url: jdbc:mysql://localhost:3306/play?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2b8&useSSL=false&allowMultiQueries=true&useLocalSessionState=true&allowPublicKeyRetrieval=true
+      username: ${db.mysql.play.username}
+      password: ${db.mysql.play.password}
       type: com.alibaba.druid.pool.DruidDataSource
       filters: stat
       maxActive: 19
@@ -29,7 +29,7 @@ app:
       testOnReturn: false
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
-    winds:
+    mydb:
       url: jdbc:sqlserver://localhost:1433;DatabaseName=winds
       username: sa
       password: sqlserver2014

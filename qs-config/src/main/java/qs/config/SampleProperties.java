@@ -9,10 +9,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 
-@Component
-@ConfigurationProperties(prefix = "sample")
-@EnableConfigurationProperties
-@Validated
+//@Component
+//@ConfigurationProperties(prefix = "sample")
+//@EnableConfigurationProperties
+//@Validated
 public class SampleProperties {
 
     /**

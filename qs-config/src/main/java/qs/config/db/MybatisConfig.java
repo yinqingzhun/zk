@@ -89,14 +89,14 @@ public class MybatisConfig implements TransactionManagementConfigurer, Applicati
         }
     }
 
-    @Qualifier("dataSource2")
-    @Autowired
-    DataSource mydb;
-
-    @Bean
-    public JdbcTemplate jdbcTemplate() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(mydb);
-        return jdbcTemplate;
-    }
+//    @Qualifier("dataSource2")
+//    @Autowired
+//    DataSource mydb;
+//
+//    @Bean
+//    public JdbcTemplate jdbcTemplate() {
+//        JdbcTemplate jdbcTemplate = new JdbcTemplate(mydb);
+//        return jdbcTemplate;
+//    }
 
 }

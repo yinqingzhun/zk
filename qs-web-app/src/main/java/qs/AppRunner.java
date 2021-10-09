@@ -20,11 +20,10 @@ import java.util.Arrays;
 @Component
 public class AppRunner implements ApplicationRunner {
     Logger logger = LoggerFactory.getLogger(AppRunner.class);
-    @Autowired
-    SampleProperties sampleProperties;
+//    @Autowired
+//    SampleProperties sampleProperties;
 
-    @Autowired
-    ReactiveStringRedisTemplate reactiveStringRedisTemplate;
+
 
     private DefaultRedisScript incrementAwardIdScript;
 
@@ -46,16 +45,8 @@ public class AppRunner implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        logger.info("sample host:{},port:{}", sampleProperties.getHost(), sampleProperties.getPort());
+//        logger.info("sample host:{},port:{}", sampleProperties.getHost(), sampleProperties.getPort());
 
-        for (int i = 0; i < 2; i++) {
-            reactiveStringRedisTemplate.execute(incrementAwardIdScript, Arrays.asList("a"), Arrays.asList("3", "10"))
-                    .log()
-                    .subscribe(v -> {
-                        logger.warn("redis eval: {}", v);
-
-                    });
-        }
 
 
 
