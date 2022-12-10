@@ -1,3 +1,4 @@
+/*
 package qs.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,3 +52,4 @@ public class AuthController {
         return ReturnValue.buildSuccessResult(user);
     }
 }
+*/

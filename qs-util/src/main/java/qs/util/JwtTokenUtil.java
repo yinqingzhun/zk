@@ -1,3 +1,4 @@
+/*
 package qs.util;
 
 import io.jsonwebtoken.Claims;
@@ -130,3 +131,4 @@ public class JwtTokenUtil implements Serializable {
                         && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate()));
     }
 }
+*/

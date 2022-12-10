@@ -1,3 +1,4 @@
+/*
 package qs.config.redis;
 
 import org.springframework.context.annotation.Bean;
@@ -33,3 +34,4 @@ public class RedisConfig {
     }
     
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package qs.repository;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -42,3 +43,4 @@ public class UserRepository {
     }
 
 }
+*/

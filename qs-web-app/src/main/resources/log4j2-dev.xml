@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="warn">
+<configuration status="warn" debug="true" packages="qs.config">
     <Properties>
         <!-- 配置日志文件输出目录 ${sys:user.home} -->
         <Property name="LOG_HOME">${sys:user.home}/logs/qapro-web-api/</Property>
@@ -16,7 +16,8 @@
 
         <!-- 这个会打印出所有的info及以下级别的信息，每次大小超过size，
         则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
-        <RollingFile name="RollingFileDebug" fileName="${LOG_HOME}/debug.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="RollingFileDebug" fileName="${LOG_HOME}/debug.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
             <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
             <ThresholdFilter level="debug" onMatch="ACCEPT"
                              onMismatch="DENY"/>
@@ -46,14 +47,13 @@
                 <!-- log4j2的按天分日志文件 : info-%d{yyyy-MM-dd}-%i.log-->
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
                 <!-- SizeBasedTriggeringPolicy:Policies子节点， 基于指定文件大小的滚动策略，size属性用来定义每个日志文件的大小. -->
-                <SizeBasedTriggeringPolicy size="100 MB" />
+                <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
         </RollingFile>
 
         <RollingFile name="RollingFileWarn" fileName="${WARN_LOG_FILE_NAME}/warn.log"
                      filePattern="${WARN_LOG_FILE_NAME}/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
-            <ThresholdFilter level="warn" onMatch="ACCEPT"
-                             onMismatch="DENY"/>
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
@@ -71,18 +71,23 @@
             <Policies>
                 <!-- log4j2的按分钟 分日志文件 : warn-%d{yyyy-MM-dd-HH-mm}-%i.log-->
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-                <SizeBasedTriggeringPolicy size="100 MB" />
+                <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
         </RollingFile>
-
+        <!--        <Sentry name="Sentry"/>-->
+        <Cache name="Cache">
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Cache>
     </appenders>
 
-    <loggers> 
+    <loggers>
         <logger name="org.springframework" level="info"></logger>
         <logger name="org.springframework.jdbc.datasource" level="debug"></logger>
-        <root level="debug">
-            <appender-ref ref="RollingFileInfo"/>
+        <root level="info">
+            <!--            <appender-ref ref="RollingFileInfo"/>-->
             <appender-ref ref="Console"/>
+            <!--            <appender-ref ref="Sentry" level="WARN"/>-->
+            <appender-ref ref="Cache"/>
         </root>
     </loggers>
 

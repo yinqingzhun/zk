@@ -1,21 +1,14 @@
 package qs.web.controller;
 
-import org.springframework.http.HttpRequest;
-import org.springframework.web.HttpRequestHandler;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.SimpleServletHandlerAdapter;
-import org.springframework.web.servlet.mvc.AbstractController;
-import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.stereotype.Controller;
 
 import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
  * BeanNameUrlHandlerMapping example
  */
-@org.springframework.stereotype.Controller("/welcome")
+@Controller("/welcome")
 public class WelcomeController implements Servlet {
 
 
