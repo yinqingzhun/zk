@@ -1,6 +1,5 @@
 package qs.web.controller;
 
-import com.google.common.base.Joiner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -21,7 +20,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import qs.config.SlowLogCenter;
 import qs.model.ReturnValue;
 import qs.model.User;
@@ -39,10 +37,7 @@ import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by yinqingzhun on 2017/08/29.
@@ -73,6 +68,15 @@ public class HomeController implements BeanNameAware, BeanFactoryAware, Applicat
                                   @Value("${app.datasource.mdb.password}") String password) {
         DataSource dataSource = DataSourceBuilder.create().url(url).username(username).password(password).build();
         return dataSource;
+    }
+
+    @ResponseBody
+    @RequestMapping({"hello"})
+    public ReturnValue hello(HttpServletRequest request) {
+
+
+        return ReturnValue.buildSuccessResult(String.join("",
+                request.getRequestURL(), Optional.ofNullable(request.getQueryString()).map(p -> "?" + p).orElse("")));
     }
 
     @RequestMapping({"", "/"})

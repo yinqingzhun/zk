@@ -1,4 +1,4 @@
-package qs.service;
+package qs.service.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -6,6 +6,7 @@ import qs.config.db.DbChoosing;
 import qs.config.db.EnumDataSourceName;
 import qs.model.po.Wind;
 import qs.persist.WindMapper;
+import qs.service.WindService;
 
 @DbChoosing(value = EnumDataSourceName.WINDS)
 @Component
